@@ -44,27 +44,32 @@
           padding: 20px;
           text-align: center;
           position: relative;
-          overflow: hidden;
+          overflow: hidden; /* Good practice with animations */
         }
         .logo {
           width: 150px;
           height: 150px;
           object-fit: contain;
-          /* Removed animation for less distraction */
-          /* animation: logoAnimation 6s ease-in-out infinite; */
           display: block;
           margin: 0 auto 10px auto;
+          /* --- ADDED ANIMATION FOR LOGO --- */
+          animation: logoPulse 5s ease-in-out infinite;
         }
-        /* @keyframes logoAnimation { ... } */
         .school-name {
           font-size: 40px;
           font-weight: bold;
           margin-top: 10px;
+          /* --- ADDED ANIMATION FOR SCHOOL NAME --- */
+          animation: nameGlow 4s ease-in-out infinite;
+          /* Ensure positioning context if needed for complex animations later */
+          position: relative;
         }
         .subtitle {
           font-size: 18px;
           margin-top: 5px;
           color: #ecf0f1;
+          /* --- ADDED ANIMATION FOR MOTTO --- */
+          animation: mottoFade 4.5s ease-in-out infinite;
         }
         .header-links {
             margin-top: 15px;
@@ -93,6 +98,26 @@
          #change-password-link:hover {
             color: #f39c12;
         }
+
+        /* --- KEYFRAMES FOR ANIMATIONS --- */
+        @keyframes logoPulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
+
+        @keyframes nameGlow {
+          0% { text-shadow: 0 0 5px rgba(236, 240, 241, 0.5); } /* Use subtitle color for subtle glow */
+          50% { text-shadow: 0 0 15px rgba(236, 240, 241, 0.8); }
+          100% { text-shadow: 0 0 5px rgba(236, 240, 241, 0.5); }
+        }
+
+        @keyframes mottoFade {
+          0% { opacity: 0.8; }
+          50% { opacity: 1; }
+          100% { opacity: 0.8; }
+        }
+        /* --- END KEYFRAMES --- */
 
 
         /* --- Auth & Password Forms Styles --- */
@@ -299,6 +324,7 @@
     <!-- Main Content (Hidden Initially) -->
     <div id="main-content" style="display: none;">
         <header>
+            <!-- The logo, name, and motto below will now use the animations defined in the CSS -->
             <img src="placeholder-logo.png" alt="School Logo" class="logo" id="school-logo">
             <div class="school-name" id="school-name-display">SCHOOL NAME PLACEHOLDER</div>
             <div class="subtitle" id="school-motto-display">Motto Placeholder</div>
