@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>check in out form</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" 
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" 
+        crossorigin="anonymous">
+    
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Link to JavaScript File -->
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="track my student.css">
+    <style>
+        /* Basic styling for body */
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+    
+        /* Header styles */
+        header {
+          background-color: #2C3E50;
+          color: white;
+          padding: 20px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+    
+        /* Logo styles */
+        .logo {
+          width: 150px;
+          height: auto;
+          animation: logoAnimation 6s ease-in-out infinite;
+        }
+    
+        /* Animation for logo */
+        @keyframes logoAnimation {
+          0% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(1); opacity: 0.8; }
+        }
+    
+        /* Title animation */
+        .school-name {
+          font-size: 40px;
+          font-weight: bold;
+          margin-top: 10px;
+          animation: titleAnimation 6s ease-in-out infinite;
+        }
+    
+        /* Animation for title */
+        @keyframes titleAnimation {
+          0% { transform: translateY(-20px); opacity: 0; }
+          50% { transform: translateY(10px); opacity: 1; }
+          100% { transform: translateY(-20px); opacity: 0; }
+        }
+    
+        /* Subtitle */
+        .subtitle {
+          font-size: 18px;
+          margin-top: 5px;
+          color: #ecf0f1;
+          animation: subtitleAnimation 6s ease-in-out infinite;
+        }
+    
+        /* Animation for subtitle */
+        @keyframes subtitleAnimation {
+          0% { transform: translateX(-20px); opacity: 0; }
+          50% { transform: translateX(10px); opacity: 1; }
+          100% { transform: translateX(-20px); opacity: 0; }
+        }
+        
+    /* Style for links */
+    a {
+      color: #3498db;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+      </style>
+</head>
+<body>
+    <header>
+        <!-- School Logo -->
+        <img src="122.png" alt="School Logo" class="logo">
+    
+        <!-- School Name -->
+        <div class="school-name">BISHOP DANSTAN NSUBUGA MEMORIAL SECONDARY SCHOOL</div>
+    
+        <!-- Subtitle -->
+        <div class="subtitle">knowledge Is Power</div>
+        
+        <div class="header-links">
+            <TABLE>
+                <TH>
+                    <TR>
+                        <a href="registration database.html">SCHOOL REG & DATABSE</a>
+                    </TR>
+                </TH>
+            </TABLE>
+            
+            <a href="check in out form.html">GET PASS</a>
+          </div>
+
+    </div>
+      </header>
+    
+    <div class="container border mt-3 bg-light">
+        <div class="row">
+            <!-- Left Section -->
+            <div class="col-md-6 p-5 bg-primary text-white">
+                <h1>Hi there!</h1>
+                <h4>It's Bidan, Check-In & Out</h4>
+                <p>We’d love to hear from you. Fill out the form and we’ll get back to you as soon as possible!</p>
+            </div>
+
+            <!-- Right Section (Check-In Form) -->
+            <div class="col-md-6 py-3">
+                <h1>Check-In Form</h1>
+                
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name" oninput="searchGuardianEmail()">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                </div>
+
+                <button class="btn btn-primary" onclick="sendCheckInMail()">Submit</button>
+            </div>
+        </div>
+
+        <!-- Check-Out Form Section -->
+        <div class="row mt-5">
+            <!-- Left Section -->
+            <div class="col-md-6 p-5 bg-danger text-white">
+                <h1>Goodbye!</h1>
+                <h4>It's Bidan, Check-Out</h4>
+                <p>Thank you for staying with us. Fill out the form and we'll assist you with your check-out process.</p>
+            </div>
+
+            <!-- Right Section (Check-Out Form) -->
+            <div class="col-md-6 py-3">
+                <h1>Check-Out Form</h1>
+                
+                <div class="form-group">
+                    <label for="checkout-name">Name</label>
+                    <input type="text" class="form-control" id="checkout-name" placeholder="Enter your name" oninput="searchGuardianEmail()">
+                </div>
+
+                <div class="form-group">
+                    <label for="checkout-email">Email</label>
+                    <input type="email" class="form-control" id="checkout-email" placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="checkout-reason">Reason for Check-Out</label>
+                    <input type="text" class="form-control" id="checkout-reason" placeholder="Enter your reason for checking out">
+                </div>
+
+                <button class="btn btn-danger" onclick="sendCheckOutMail()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize EmailJS when the page loads
+        window.onload = function () {
+            emailjs.init("O4UH8caGGsjo8EEsb"); // Replace with your actual Public Key
+        };
+    
+        // Function to validate email format
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+            return re.test(email);
+        }
+
+        // Function to search and auto-fill the guardian's email based on the student name
+        function searchGuardianEmail() {
+            const name = document.getElementById("name").value.trim() || document.getElementById("checkout-name").value.trim();
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+
+            if (name) {
+                const student = students.find(student => student.name.toLowerCase() === name.toLowerCase());
+                if (student) {
+                    const guardianEmail = student.guardianEmail;
+                    // Set the guardian's email in the email field
+                    if (document.getElementById("name")) {
+                        document.getElementById("email").value = guardianEmail;
+                    }
+                    if (document.getElementById("checkout-name")) {
+                        document.getElementById("checkout-email").value = guardianEmail;
+                    }
+                }
+            }
+        }
+    
+        // Function to send Check-In email
+        function sendCheckInMail() {
+            var name = document.getElementById("name").value.trim();
+            var email = document.getElementById("email").value.trim();
+    
+            // Check if fields are empty
+            if (!name || !email) {
+                alert("Please fill in all fields.");
+                return;
+            }
+    
+            // Validate email format
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+    
+            // Prepare parameters for EmailJS
+            var params = { 
+                name: name,
+                email: email,
+                message: "The student has arrived at school."
+            };
+    
+            const serviceID = "service_cc5v9ac";
+            const templateID = "template_7026dua";
+    
+            emailjs.send(serviceID, templateID, params)
+                .then((res) => {
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                    console.log("Check-In email sent successfully!", res);
+                    alert("Your check-in details have been sent successfully!");
+                })
+                .catch((err) => {
+                    console.error("Failed to send Check-In email:", err);
+                    alert("Failed to send check-in details. Please try again.");
+                });
+        }
+    
+        // Function to send Check-Out email
+        function sendCheckOutMail() {
+            var name = document.getElementById("checkout-name").value.trim();
+            var email = document.getElementById("checkout-email").value.trim();
+            var reason = document.getElementById("checkout-reason").value.trim();
+    
+            if (!name || !email || !reason) {
+                alert("Please fill in all fields.");
+                return;
+            }
+    
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+    
+            var params = { 
+                name: name,
+                email: email,
+                reason: reason,
+                message: "The student has moved out of school."
+            };
+    
+            const serviceID = "service_cc5v9ac";
+            const templateID = "template_tiofcf4";
+    
+            emailjs.send(serviceID, templateID, params)
+                .then((res) => {
+                    console.log("Check-Out email sent successfully!", res);
+                    document.getElementById("checkout-name").value = "";
+                    document.getElementById("checkout-email").value = "";
+                    document.getElementById("checkout-reason").value = "";
+                    alert("Your check-out details have been sent successfully!");
+                })
+                .catch((err) => {
+                    console.error("Failed to send Check-Out email:", err);
+                    alert("Failed to send check-out details. Please try again.");
+                });
+        }
+    </script>
+</body>
+</html>
