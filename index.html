@@ -339,9 +339,29 @@
             </div>
         </div> <!-- End Check In/Out Forms -->
 
-        <!-- Student Management Section (Initially Hidden) -->
-        <div id="student-management-section" style="display: none;" class="container">
-             <h2><center>School Student Registration & Database</center></h2>
+<!-- Student Management Section (Initially Hidden) -->
+<div id="student-management-section" style="display: none;" class="container">
+    <h2><center>School Student Registration & Database</center></h2>
+
+    <!-- /// START: Add this button /// -->
+    <div class="text-center mb-4"> <!-- Center the button and add margin -->
+        <button onclick="handleChangePin()" class="btn btn-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill mr-2" viewBox="0 0 16 16"> <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/> </svg>
+            Change Admin PIN
+        </button>
+    </div>
+    <!-- /// END: Add this button /// -->
+
+
+    <!-- Registration Form -->
+    <form id="registrationForm">
+       <h3>Register New Student</h3>
+       <!-- ... rest of the form ... -->
+    </form>
+
+    <!-- Registered Students Table -->
+    <!-- ... rest of the table ... -->
+</div> <!-- End Student Management Section -->
 
              <!-- Registration Form -->
              <form id="registrationForm">
@@ -428,6 +448,9 @@
         const LOGGED_IN_USER_KEY = 'loggedInSchoolEmail';
         const SCHOOL_ACCOUNTS_KEY = 'schoolAccounts';
         const STUDENTS_KEY = 'students'; // Central key for student data
+        const ADMIN_PIN_KEY = 'adminAccessPin'; // Key for localStorage
+        const DEFAULT_ADMIN_PIN = "1234"; // Default PIN if none is set
+                                          // !!! WARNING: Still stored plainly in localStorage - Demo only! !!!
 
         // --- DOM Elements ---
         const loginSection = document.getElementById('login-section');
@@ -456,7 +479,7 @@
             // Initialize EmailJS
             try {
                 // !!! REPLACE WITH YOUR ACTUAL EMAILJS PUBLIC KEY !!!
-                emailjs.init("O4UH8caGGsjo8EEsb");
+                emailjs.init("O4UH8caGGsjo8EEsb"); // Replace if necessary
                 console.log("EmailJS Initialized.");
             } catch (e) {
                 console.error("Failed to initialize EmailJS:", e);
@@ -480,6 +503,13 @@
                 showLogin();
             }
         };
+
+        // --- Utility Function to get the stored PIN ---
+        function getStoredPin() {
+            const storedPin = localStorage.getItem(ADMIN_PIN_KEY);
+            // If no PIN is stored, return the default; otherwise, return the stored one.
+            return storedPin === null || storedPin === "" ? DEFAULT_ADMIN_PIN : storedPin;
+        }
 
         // --- UI View Functions ---
         function showLogin() {
@@ -507,17 +537,81 @@
         // Functions to toggle between main content views
         function showCheckInOutView() {
             if (checkInOutForms) checkInOutForms.style.display = 'block';
-            if (studentManagementSection) studentManagementSection.style.display = 'none';
+            if (studentManagementSection) studentManagementSection.style.display = 'none'; // Make sure student DB is hidden
              console.log("Showing Check In/Out View");
         }
 
+        // --- MODIFIED FUNCTION ---
         function showStudentManagementView() {
-            if (checkInOutForms) checkInOutForms.style.display = 'none';
-            if (studentManagementSection) studentManagementSection.style.display = 'block';
-            console.log("Showing Student Management View");
-            // Optionally reload or refresh table if needed
-             // loadStudents(); // Could reload here if data might change frequently elsewhere
+            console.log("Attempting to show Student Management View...");
+            const correctPin = getStoredPin(); // Get the current correct PIN
+            const enteredPin = prompt("Enter the Admin PIN to access the Student Database:");
+
+            if (enteredPin === null) {
+                console.log("PIN prompt cancelled.");
+                return; // Stay on the current view
+            }
+
+            if (enteredPin === correctPin) {
+                // PIN is correct, proceed to show the section
+                if (checkInOutForms) checkInOutForms.style.display = 'none';
+                if (studentManagementSection) studentManagementSection.style.display = 'block';
+                console.log("PIN Correct. Showing Student Management View");
+            } else {
+                // Incorrect PIN entered
+                alert("Incorrect PIN entered. Access denied.");
+                console.log("Incorrect PIN entered.");
+                // Do not change the view
+            }
         }
+        // --- END OF MODIFIED FUNCTION ---
+
+        // --- NEW FUNCTION: Handle PIN Change ---
+        function handleChangePin() {
+            console.log("Attempting to change Admin PIN...");
+            const currentPin = getStoredPin();
+
+            // 1. Verify Current PIN
+            const enteredCurrentPin = prompt("Enter your CURRENT Admin PIN to verify:");
+            if (enteredCurrentPin === null) {
+                alert("PIN change cancelled.");
+                return;
+            }
+            if (enteredCurrentPin !== currentPin) {
+                alert("Incorrect current PIN. PIN change failed.");
+                return;
+            }
+
+            // 2. Get New PIN
+            const newPin = prompt("Enter the NEW Admin PIN (leave blank to cancel):");
+            if (newPin === null || newPin.trim() === "") {
+                alert("PIN change cancelled or new PIN empty.");
+                return;
+            }
+
+            // 3. Confirm New PIN
+            const confirmNewPin = prompt("CONFIRM the NEW Admin PIN:");
+            if (confirmNewPin === null) {
+                 alert("PIN change cancelled.");
+                 return;
+            }
+
+            // 4. Validate and Save
+            if (newPin === confirmNewPin) {
+                // Save the new PIN to localStorage
+                try {
+                    localStorage.setItem(ADMIN_PIN_KEY, newPin);
+                    alert("Admin PIN changed successfully!");
+                    console.log("Admin PIN changed successfully.");
+                } catch (e) {
+                     console.error("Error saving new PIN to localStorage:", e);
+                     alert("An error occurred while saving the new PIN. Please try again.");
+                }
+            } else {
+                alert("New PINs do not match. PIN change failed.");
+            }
+        }
+        // --- END OF NEW FUNCTION ---
 
 
         // --- Header Update ---
@@ -531,6 +625,7 @@
 
 
         // --- Authentication Functions ---
+        // (handleSignup, saveAccount, handleLogin, handleLogout remain the same)
         function handleSignup(event) {
             event.preventDefault();
             console.log("Handling signup...");
@@ -626,6 +721,7 @@
             showLogin(); // Go back to login screen
         }
 
+
         // --- Utility Functions ---
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -633,8 +729,7 @@
         }
 
         // --- Student Management Functions ---
-
-        // Load saved students from localStorage and update ID counter
+        // (loadStudents, saveStudents, addStudentToTable, assignHouse, form submit listener, deleteStudentRow remain the same)
         function loadStudents() {
              if (!studentsTableBody) return; // Exit if table element not found
             console.log("Loading students from localStorage...");
@@ -653,7 +748,6 @@
              console.log(`Students loaded. Next ID: ${studentIdCounter}`);
         }
 
-        // Save the entire students array to localStorage
         function saveStudents(students) {
             try {
                  localStorage.setItem(STUDENTS_KEY, JSON.stringify(students));
@@ -664,12 +758,11 @@
             }
         }
 
-        // Add a single student object to the HTML table
         function addStudentToTable(student) {
              if (!studentsTableBody) return;
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td><img src="${student.image || 'placeholder-logo.png'}" alt="Student Image"></td>
+                <td><img src="${student.image || 'placeholder-logo.png'}" alt="Student Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"></td>
                 <td>${student.id}</td>
                 <td>${student.name}</td>
                 <td>${student.dob}</td>
@@ -684,13 +777,11 @@
             studentsTableBody.appendChild(newRow);
         }
 
-        // Assign a house in a round-robin manner
         function assignHouse() {
             lastAssignedHouseIndex = (lastAssignedHouseIndex + 1) % houses.length;
             return houses[lastAssignedHouseIndex];
         }
 
-        // Handle the registration form submission
         if (registrationForm) {
              registrationForm.addEventListener('submit', function(event) {
                 event.preventDefault();
@@ -766,8 +857,6 @@
              console.warn("Registration form element not found.");
         }
 
-
-        // Function to delete a student row from the table and localStorage
         function deleteStudentRow(button) {
             const row = button.closest('tr');
             const studentIdToDelete = row.cells[1].textContent; // Get ID from the second cell
@@ -783,11 +872,9 @@
             }
         }
 
-
         // --- Email Sending & Related Logic ---
-
-        // Search localStorage for guardian email based on student name input
-        function searchGuardianEmail(formType) {
+        // (searchGuardianEmail, sendCheckInMail, sendCheckOutMail remain the same)
+         function searchGuardianEmail(formType) {
             if (mainContent.style.display !== 'block') return; // Only run if logged in
 
             let nameInputId, emailInputId;
@@ -820,7 +907,6 @@
             }
         }
 
-        // Send Check-In Email via EmailJS
         function sendCheckInMail() {
              if (mainContent.style.display !== 'block') { alert("Please log in first."); return; }
 
@@ -836,13 +922,11 @@
                 guardian_email: email,
                 school_name: currentSchoolName,
                 message_type: "Student Check-In",
-                // Example: Customize full message if needed by your template
                 full_message: `Dear Guardian, this is to inform you that ${name} has safely checked into ${currentSchoolName}.`
             };
 
-            // !!! REPLACE WITH YOUR ACTUAL EMAILJS SERVICE AND TEMPLATE IDS !!!
-            const serviceID = "service_cc5v9ac";
-            const templateID = "template_7026dua";
+            const serviceID = "service_cc5v9ac"; // Replace if necessary
+            const templateID = "template_7026dua"; // Replace if necessary
 
             console.log("Attempting to send Check-In email:", params);
             alert("Sending check-in notification..."); // Provide user feedback
@@ -860,7 +944,6 @@
                 });
         }
 
-        // Send Check-Out Email via EmailJS
         function sendCheckOutMail() {
              if (mainContent.style.display !== 'block') { alert("Please log in first."); return; }
 
@@ -878,13 +961,11 @@
                 checkout_reason: reason,
                 school_name: currentSchoolName,
                 message_type: "Student Check-Out",
-                // Example: Customize full message
                 full_message: `Dear Guardian, this is to inform you that ${name} has checked out from ${currentSchoolName}. Reason: ${reason}.`
             };
 
-             // !!! REPLACE WITH YOUR ACTUAL EMAILJS SERVICE AND TEMPLATE IDS !!!
-            const serviceID = "service_cc5v9ac"; // Often the same service ID
-            const templateID = "template_tiofcf4"; // MUST be the specific check-out template
+            const serviceID = "service_cc5v9ac"; // Replace if necessary
+            const templateID = "template_tiofcf4"; // Replace if necessary
 
             console.log("Attempting to send Check-Out email:", params);
              alert("Sending check-out notification..."); // Provide user feedback
@@ -904,6 +985,3 @@
         }
 
     </script>
-
-</body>
-</html>
