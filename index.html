@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>check in out form</title>
+    <title>School Check In/Out & Registration System</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" 
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
         crossorigin="anonymous">
-    
+
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    <!-- Link to JavaScript File -->
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="track my student.css">
     <style>
-        /* Basic styling for body */
+        /* --- General Styles --- */
         body {
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 0;
           background-color: #f4f4f4;
         }
-    
-        /* Header styles */
+        a, .fake-link {
+          color: #3498db;
+          text-decoration: none;
+          font-size: 18px;
+          cursor: pointer;
+        }
+        a:hover, .fake-link:hover {
+          text-decoration: underline;
+        }
+
+        /* --- Header Styles --- */
         header {
           background-color: #2C3E50;
           color: white;
@@ -34,260 +40,870 @@
           position: relative;
           overflow: hidden;
         }
-    
-        /* Logo styles */
         .logo {
           width: 150px;
-          height: auto;
+          height: 150px;
+          object-fit: contain;
           animation: logoAnimation 6s ease-in-out infinite;
+          display: block;
+          margin: 0 auto 10px auto;
         }
-    
-        /* Animation for logo */
         @keyframes logoAnimation {
           0% { transform: scale(1); opacity: 0.8; }
           50% { transform: scale(1.1); opacity: 1; }
           100% { transform: scale(1); opacity: 0.8; }
         }
-    
-        /* Title animation */
         .school-name {
           font-size: 40px;
           font-weight: bold;
           margin-top: 10px;
-          animation: titleAnimation 6s ease-in-out infinite;
+          /* Removed animation for stability if preferred */
+          /* animation: titleAnimation 6s ease-in-out infinite; */
         }
-    
-        /* Animation for title */
-        @keyframes titleAnimation {
-          0% { transform: translateY(-20px); opacity: 0; }
-          50% { transform: translateY(10px); opacity: 1; }
-          100% { transform: translateY(-20px); opacity: 0; }
-        }
-    
-        /* Subtitle */
+        /* @keyframes titleAnimation { ... } */
         .subtitle {
           font-size: 18px;
           margin-top: 5px;
           color: #ecf0f1;
-          animation: subtitleAnimation 6s ease-in-out infinite;
+           /* Removed animation for stability if preferred */
+          /* animation: subtitleAnimation 6s ease-in-out infinite; */
         }
-    
-        /* Animation for subtitle */
-        @keyframes subtitleAnimation {
-          0% { transform: translateX(-20px); opacity: 0; }
-          50% { transform: translateX(10px); opacity: 1; }
-          100% { transform: translateX(-20px); opacity: 0; }
+         /* @keyframes subtitleAnimation { ... } */
+        .header-links {
+            margin-top: 15px;
         }
-        
-    /* Style for links */
-    a {
-      color: #3498db;
-      text-decoration: none;
-      font-size: 18px;
-    }
+        .header-links a, .header-links span { /* Use span for non-link items like logout */
+            margin: 0 15px;
+            color: #ecf0f1;
+            font-size: 16px;
+            cursor: pointer; /* Make all clickable */
+            text-decoration: none;
+        }
+        .header-links a:hover, .header-links span:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        #logout-link {
+            color: #e74c3c;
+        }
+        #logout-link:hover {
+            color: #c0392b;
+        }
 
-    a:hover {
-      text-decoration: underline;
-    }
-      </style>
+        /* --- Auth Forms Styles --- */
+        .auth-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .auth-container h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2C3E50;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .toggle-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* --- Main Content Area Styles --- */
+        #main-content .container.border {
+            margin-top: 20px;
+            padding: 20px; /* Add padding to container */
+        }
+
+        /* Check-in/Out Form Specific Styles */
+        .check-in-col {
+           background-color: #3498DB; /* Blue for check-in */
+           color: white;
+           padding: 3rem; /* More padding */
+           border-radius: 0.25rem 0 0 0.25rem;
+        }
+        .check-out-col {
+            background-color: #E74C3C; /* Red for check-out */
+            color: white;
+            padding: 3rem; /* More padding */
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+        .form-side {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 0 0.25rem 0.25rem 0; /* Match Bootstrap */
+        }
+         .form-side h3 { /* Slightly smaller heading for forms */
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        /* Student Registration/Database Specific Styles */
+        #student-management-section {
+             background-color: #ffffff;
+             padding: 30px;
+             border-radius: 8px;
+             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+             margin-top: 20px; /* Space from header */
+        }
+        #registrationForm {
+            max-width: 800px; /* Wider form */
+            margin: 0 auto 30px auto; /* Center form, add margin below */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+         #registrationForm label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block; /* Ensure labels are on their own line */
+        }
+         #registrationForm input, #registrationForm select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; /* Include padding in width */
+        }
+        #registrationForm button {
+            background-color: #28a745; /* Bootstrap success green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        #registrationForm button:hover {
+            background-color: #218838;
+        }
+        .delete-btn {
+            background-color: #dc3545; /* Bootstrap danger red */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        #studentsTable {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        #studentsTable th, #studentsTable td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 12px; /* More padding */
+        }
+        #studentsTable th {
+            background-color: #343a40; /* Dark header */
+            color: white;
+        }
+        #studentsTable tr:nth-child(even) {
+             background-color: #f2f2f2; /* Zebra striping */
+        }
+         #studentsTable img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+    </style>
 </head>
 <body>
-    <header>
-        <!-- School Logo -->
-        <img src="122.png" alt="School Logo" class="logo">
-    
-        <!-- School Name -->
-        <div class="school-name">BISHOP DANSTAN NSUBUGA MEMORIAL SECONDARY SCHOOL</div>
-    
-        <!-- Subtitle -->
-        <div class="subtitle">knowledge Is Power</div>
-        
-        <div class="header-links">
-            <TABLE>
-                <TH>
-                    <TR>
-                        <a href="home.html">SCHOOL REG & DATABSE</a>
-                    </TR>
-                </TH>
-            </TABLE>
-            
-            <a href="index.html">GET PASS</a>
-          </div>
 
+    <!-- Login Section -->
+    <div id="login-section" class="auth-container">
+        <h1>Login</h1>
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="login-email">Email address</label>
+                <input type="email" class="form-control" id="login-email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        <span class="toggle-link fake-link" onclick="showSignup()">Don't have an account? Sign Up</span>
     </div>
-      </header>
-    
-    <div class="container border mt-3 bg-light">
-        <div class="row">
-            <!-- Left Section -->
-            <div class="col-md-6 p-5 bg-primary text-white">
-                <h1>Hi there!</h1>
-                <h4>It's Bidan, Check-In & Out</h4>
-                <p>We’d love to hear from you. Fill out the form and we’ll get back to you as soon as possible!</p>
+
+    <!-- Signup Section -->
+    <div id="signup-section" class="auth-container" style="display: none;">
+        <h1>Sign Up</h1>
+        <form id="signup-form" onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label for="signup-school-name">School Name</label>
+                <input type="text" class="form-control" id="signup-school-name" placeholder="Enter school name" required>
             </div>
-
-            <!-- Right Section (Check-In Form) -->
-            <div class="col-md-6 py-3">
-                <h1>Check-In Form</h1>
-                
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter your name" oninput="searchGuardianEmail()">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
-                </div>
-
-                <button class="btn btn-primary" onclick="sendCheckInMail()">Submit</button>
+            <div class="form-group">
+                <label for="signup-motto">School Motto</label>
+                <input type="text" class="form-control" id="signup-motto" placeholder="Enter school motto" required>
             </div>
-        </div>
-
-        <!-- Check-Out Form Section -->
-        <div class="row mt-5">
-            <!-- Left Section -->
-            <div class="col-md-6 p-5 bg-danger text-white">
-                <h1>Goodbye!</h1>
-                <h4>It's Bidan, Check-Out</h4>
-                <p>Thank you for staying with us. Fill out the form and we'll assist you with your check-out process.</p>
+             <div class="form-group">
+                <label for="signup-logo">School Logo</label>
+                <input type="file" class="form-control-file" id="signup-logo" accept="image/*">
+                 <small class="form-text text-muted">Optional. Max 2MB recommended (due to browser storage limits).</small>
             </div>
-
-            <!-- Right Section (Check-Out Form) -->
-            <div class="col-md-6 py-3">
-                <h1>Check-Out Form</h1>
-                
-                <div class="form-group">
-                    <label for="checkout-name">Name</label>
-                    <input type="text" class="form-control" id="checkout-name" placeholder="Enter your name" oninput="searchGuardianEmail()">
-                </div>
-
-                <div class="form-group">
-                    <label for="checkout-email">Email</label>
-                    <input type="email" class="form-control" id="checkout-email" placeholder="Enter your email">
-                </div>
-
-                <div class="form-group">
-                    <label for="checkout-reason">Reason for Check-Out</label>
-                    <input type="text" class="form-control" id="checkout-reason" placeholder="Enter your reason for checking out">
-                </div>
-
-                <button class="btn btn-danger" onclick="sendCheckOutMail()">Submit</button>
+            <div class="form-group">
+                <label for="signup-email">Admin Email address</label>
+                <input type="email" class="form-control" id="signup-email" placeholder="Enter email" required>
+                 <small class="form-text text-muted">This will be your login email.</small>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" class="form-control" id="signup-password" placeholder="Password" required>
+                 <small class="form-text text-danger">Warning: Password stored insecurely for this demo.</small>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+        </form>
+         <span class="toggle-link fake-link" onclick="showLogin()">Already have an account? Login</span>
     </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div id="main-content" style="display: none;">
+        <header>
+            <img src="placeholder-logo.png" alt="School Logo" class="logo" id="school-logo">
+            <div class="school-name" id="school-name-display">SCHOOL NAME PLACEHOLDER</div>
+            <div class="subtitle" id="school-motto-display">Motto Placeholder</div>
+            <div class="header-links">
+                 <a onclick="showCheckInOutView()">CHECK IN/OUT</a>
+                 <a onclick="showStudentManagementView()">STUDENT DATABASE</a>
+                 <span id="logout-link" onclick="handleLogout()" style="display: none;">Logout</span>
+            </div>
+        </header>
+
+        <!-- Check In/Out Forms Container -->
+        <div id="check-in-out-forms" class="container border mt-3 bg-light">
+            <!-- Check-In Row -->
+            <div class="row mb-5"> <!-- Added margin-bottom -->
+                <div class="col-md-5 p-0 check-in-col d-flex flex-column justify-content-center align-items-center text-center"> <!-- Adjusted grid, padding, centering -->
+                    <h1>Hi there!</h1>
+                    <h4>Student Check-In</h4>
+                    <p>Fill out the form to notify the guardian of the student's arrival.</p>
+                </div>
+                <div class="col-md-7 py-4 form-side"> <!-- Adjusted grid -->
+                    <h3>Check-In Form</h3>
+                    <div class="form-group">
+                        <label for="name">Student Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Start typing student name..." oninput="searchGuardianEmail('checkin')">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Guardian Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Guardian email (auto-filled or enter manually)" required>
+                    </div>
+                    <button class="btn btn-primary" onclick="sendCheckInMail()">Submit Check-In</button>
+                </div>
+            </div>
+
+            <!-- Check-Out Row -->
+            <div class="row">
+                <div class="col-md-5 p-0 check-out-col d-flex flex-column justify-content-center align-items-center text-center"> <!-- Adjusted grid, padding, centering -->
+                     <h1>Goodbye!</h1>
+                    <h4>Student Check-Out</h4>
+                    <p>Fill out the form to notify the guardian about the student's departure.</p>
+                </div>
+                <div class="col-md-7 py-4 form-side"> <!-- Adjusted grid -->
+                    <h3>Check-Out Form</h3>
+                    <div class="form-group">
+                        <label for="checkout-name">Student Name</label>
+                        <input type="text" class="form-control" id="checkout-name" placeholder="Start typing student name..." oninput="searchGuardianEmail('checkout')">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout-email">Guardian Email</label>
+                        <input type="email" class="form-control" id="checkout-email" placeholder="Guardian email (auto-filled or enter manually)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout-reason">Reason for Check-Out</label>
+                        <input type="text" class="form-control" id="checkout-reason" placeholder="Enter reason (e.g., End of day, Appointment)" required>
+                    </div>
+                    <button class="btn btn-danger" onclick="sendCheckOutMail()">Submit Check-Out</button>
+                </div>
+            </div>
+        </div> <!-- End Check In/Out Forms -->
+
+        <!-- Student Management Section (Initially Hidden) -->
+        <div id="student-management-section" style="display: none;" class="container">
+             <h2><center>School Student Registration & Database</center></h2>
+
+             <!-- Registration Form -->
+             <form id="registrationForm">
+                <h3>Register New Student</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" name="name" required>
+
+                        <label for="reg-dob">Date of Birth</label>
+                        <input type="date" id="reg-dob" name="dob" required>
+
+                        <label for="reg-gender">Gender</label>
+                        <select id="reg-gender" name="gender" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <label for="reg-phone">Student Phone Number</label>
+                        <input type="tel" id="reg-phone" name="phone" placeholder="Optional">
+
+                        <label for="reg-address">Home Address</label>
+                        <input type="text" id="reg-address" name="address" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="reg-guardian">Guardian's Name</label>
+                        <input type="text" id="reg-guardian" name="guardian" required>
+
+                        <label for="reg-guardianPhone">Guardian's Phone Number</label>
+                        <input type="tel" id="reg-guardianPhone" name="guardianPhone" required>
+
+                        <label for="reg-guardianEmail">Guardian's Email Address</label>
+                        <input type="email" id="reg-guardianEmail" name="guardianEmail" required>
+                         <small class="form-text text-muted">Used for check-in/out notifications.</small>
+
+                        <label for="reg-school">Attendance Type</label>
+                        <select id="reg-school" name="school" required>
+                             <option value="" disabled selected>Select Type</option>
+                            <option value="Day Student">Day Student</option>
+                            <option value="Boarding Student">Boarding Student</option>
+                        </select>
+
+                        <label for="reg-stream">Class / Stream (e.g., S1A, S4 Blue)</label>
+                        <input type="text" id="reg-stream" name="stream" required>
+
+                         <label for="reg-studentImage">Upload Student Image</label>
+                         <input type="file" id="reg-studentImage" name="studentImage" accept="image/*" class="form-control-file">
+                         <small class="form-text text-muted">Optional. Small file size recommended.</small>
+                     </div>
+                 </div>
+                 <button type="submit" class="mt-3">Register Student</button>
+            </form>
+
+            <!-- Registered Students Table -->
+            <h3 class="mt-5">Registered Students List</h3>
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>DOB</th>
+                        <th>Gender</th>
+                        <th>Guardian</th>
+                        <th>Guardian Email</th>
+                        <th>Class</th>
+                        <th>Attendance</th>
+                        <th>House</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be loaded here by JavaScript -->
+                </tbody>
+            </table>
+        </div> <!-- End Student Management Section -->
+
+    </div><!-- End Main Content -->
 
     <script>
-        // Initialize EmailJS when the page loads
+        // --- Constants ---
+        const LOGGED_IN_USER_KEY = 'loggedInSchoolEmail';
+        const SCHOOL_ACCOUNTS_KEY = 'schoolAccounts';
+        const STUDENTS_KEY = 'students'; // Central key for student data
+
+        // --- DOM Elements ---
+        const loginSection = document.getElementById('login-section');
+        const signupSection = document.getElementById('signup-section');
+        const mainContent = document.getElementById('main-content');
+        const logoutLink = document.getElementById('logout-link');
+        const checkInOutForms = document.getElementById('check-in-out-forms');
+        const studentManagementSection = document.getElementById('student-management-section');
+
+        // Header elements
+        const schoolLogo = document.getElementById('school-logo');
+        const schoolNameDisplay = document.getElementById('school-name-display');
+        const schoolMottoDisplay = document.getElementById('school-motto-display');
+
+        // Student Management Elements
+        const registrationForm = document.getElementById('registrationForm');
+        const studentsTableBody = document.querySelector('#studentsTable tbody');
+
+        // --- Student Management Globals ---
+        let studentIdCounter = 1; // Initialize counter
+        const houses = ["Willis", "Stuat", "Hannington", "Brown"];
+        let lastAssignedHouseIndex = -1;
+
+        // --- Initialization ---
         window.onload = function () {
-            emailjs.init("O4UH8caGGsjo8EEsb"); // Replace with your actual Public Key
+            // Initialize EmailJS
+            try {
+                // !!! REPLACE WITH YOUR ACTUAL EMAILJS PUBLIC KEY !!!
+                emailjs.init("O4UH8caGGsjo8EEsb");
+                console.log("EmailJS Initialized.");
+            } catch (e) {
+                console.error("Failed to initialize EmailJS:", e);
+                alert("Error initializing email service. Some features might not work.");
+            }
+
+            // Check login status
+            const loggedInEmail = sessionStorage.getItem(LOGGED_IN_USER_KEY);
+            if (loggedInEmail) {
+                const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
+                const userData = accounts[loggedInEmail];
+                if (userData) {
+                    console.log("User is logged in:", loggedInEmail);
+                    showMainContent(userData);
+                } else {
+                    console.log("Logged in user data not found, clearing session.");
+                    handleLogout(); // Data inconsistency
+                }
+            } else {
+                console.log("No user logged in, showing login form.");
+                showLogin();
+            }
         };
-    
-        // Function to validate email format
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
-            return re.test(email);
+
+        // --- UI View Functions ---
+        function showLogin() {
+            loginSection.style.display = 'block';
+            signupSection.style.display = 'none';
+            mainContent.style.display = 'none';
         }
 
-        // Function to search and auto-fill the guardian's email based on the student name
-        function searchGuardianEmail() {
-            const name = document.getElementById("name").value.trim() || document.getElementById("checkout-name").value.trim();
-            const students = JSON.parse(localStorage.getItem('students')) || [];
+        function showSignup() {
+            loginSection.style.display = 'none';
+            signupSection.style.display = 'block';
+            mainContent.style.display = 'none';
+        }
+
+        function showMainContent(userData) {
+            loginSection.style.display = 'none';
+            signupSection.style.display = 'none';
+            mainContent.style.display = 'block';
+            logoutLink.style.display = 'inline'; // Show logout
+            updateHeader(userData);
+            loadStudents(); // Load student data once logged in
+            showCheckInOutView(); // Show check-in/out by default
+        }
+
+        // Functions to toggle between main content views
+        function showCheckInOutView() {
+            if (checkInOutForms) checkInOutForms.style.display = 'block';
+            if (studentManagementSection) studentManagementSection.style.display = 'none';
+             console.log("Showing Check In/Out View");
+        }
+
+        function showStudentManagementView() {
+            if (checkInOutForms) checkInOutForms.style.display = 'none';
+            if (studentManagementSection) studentManagementSection.style.display = 'block';
+            console.log("Showing Student Management View");
+            // Optionally reload or refresh table if needed
+             // loadStudents(); // Could reload here if data might change frequently elsewhere
+        }
+
+
+        // --- Header Update ---
+        function updateHeader(userData) {
+            console.log("Updating header for:", userData.schoolName);
+            schoolLogo.src = userData.logoDataUrl || 'placeholder-logo.png';
+            schoolLogo.alt = (userData.schoolName || 'School') + " Logo";
+            schoolNameDisplay.textContent = userData.schoolName || 'School Name Not Set';
+            schoolMottoDisplay.textContent = userData.motto || 'Motto Not Set';
+        }
+
+
+        // --- Authentication Functions ---
+        function handleSignup(event) {
+            event.preventDefault();
+            console.log("Handling signup...");
+
+            const schoolName = document.getElementById('signup-school-name').value.trim();
+            const motto = document.getElementById('signup-motto').value.trim();
+            const email = document.getElementById('signup-email').value.trim().toLowerCase();
+            const password = document.getElementById('signup-password').value;
+            const logoFile = document.getElementById('signup-logo').files[0];
+
+            if (!schoolName || !motto || !email || !password) {
+                alert('Please fill in all required fields.'); return;
+            }
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.'); return;
+            }
+
+            const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
+            if (accounts[email]) {
+                alert('Account with this email already exists. Please login.'); return;
+            }
+
+            let logoDataUrl = null;
+            if (logoFile) {
+                 if (logoFile.size > 2 * 1024 * 1024) { // 2MB limit
+                    alert('Logo file too large (Max 2MB). Please choose a smaller one.'); return;
+                 }
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    logoDataUrl = reader.result;
+                    saveAccount(accounts, email, password, schoolName, motto, logoDataUrl); // Save AFTER reading
+                }
+                reader.onerror = function() {
+                    console.error("Error reading logo file.");
+                    alert('Could not process logo file. Signing up without logo.');
+                    saveAccount(accounts, email, password, schoolName, motto, null); // Save without logo on error
+                }
+                reader.readAsDataURL(logoFile);
+            } else {
+                 saveAccount(accounts, email, password, schoolName, motto, null); // Save immediately if no logo
+            }
+        }
+
+        function saveAccount(accounts, email, password, schoolName, motto, logoDataUrl) {
+             // *** WARNING: Insecure password storage! Use hashing on a server in production. ***
+            accounts[email] = { password: password, schoolName: schoolName, motto: motto, logoDataUrl: logoDataUrl };
+            try {
+                localStorage.setItem(SCHOOL_ACCOUNTS_KEY, JSON.stringify(accounts));
+                console.log("Account created successfully for:", email);
+                alert('Account created successfully! Please login.');
+                document.getElementById('signup-form').reset();
+                showLogin();
+            } catch (e) {
+                 console.error("Error saving account to localStorage:", e);
+                 if (e.name === 'QuotaExceededError') {
+                     alert('Could not save account. Storage limit reached, possibly due to large logo. Try removing logo or clearing site data.');
+                 } else {
+                    alert('An error occurred saving your account. Please try again.');
+                 }
+                 // Attempt cleanup
+                 delete accounts[email];
+                 localStorage.setItem(SCHOOL_ACCOUNTS_KEY, JSON.stringify(accounts));
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            console.log("Handling login...");
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) { alert('Please enter email and password.'); return; }
+
+            const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
+            const userData = accounts[email];
+
+            // *** WARNING: Insecure password check! ***
+            if (userData && userData.password === password) {
+                console.log("Login successful for:", email);
+                sessionStorage.setItem(LOGGED_IN_USER_KEY, email); // Use session storage
+                document.getElementById('login-form').reset();
+                showMainContent(userData);
+            } else {
+                console.log("Login failed for:", email);
+                alert('Invalid email or password.');
+            }
+        }
+
+        function handleLogout() {
+            console.log("Handling logout...");
+            sessionStorage.removeItem(LOGGED_IN_USER_KEY);
+            logoutLink.style.display = 'none';
+            showLogin(); // Go back to login screen
+        }
+
+        // --- Utility Functions ---
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        // --- Student Management Functions ---
+
+        // Load saved students from localStorage and update ID counter
+        function loadStudents() {
+             if (!studentsTableBody) return; // Exit if table element not found
+            console.log("Loading students from localStorage...");
+            studentsTableBody.innerHTML = ''; // Clear existing table rows
+            const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
+            let maxId = 0;
+            savedStudents.forEach(student => {
+                addStudentToTable(student);
+                // Extract number from ID (e.g., ID12 -> 12) to find highest existing ID
+                const idNum = parseInt(student.id.replace('ID', ''), 10);
+                if (!isNaN(idNum) && idNum > maxId) {
+                    maxId = idNum;
+                }
+            });
+            studentIdCounter = maxId + 1; // Set counter to next available ID
+             console.log(`Students loaded. Next ID: ${studentIdCounter}`);
+        }
+
+        // Save the entire students array to localStorage
+        function saveStudents(students) {
+            try {
+                 localStorage.setItem(STUDENTS_KEY, JSON.stringify(students));
+                 console.log("Students array saved to localStorage.");
+            } catch (e) {
+                 console.error("Error saving students to localStorage:", e);
+                 alert("Error saving student data. Storage might be full.");
+            }
+        }
+
+        // Add a single student object to the HTML table
+        function addStudentToTable(student) {
+             if (!studentsTableBody) return;
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><img src="${student.image || 'placeholder-logo.png'}" alt="Student Image"></td>
+                <td>${student.id}</td>
+                <td>${student.name}</td>
+                <td>${student.dob}</td>
+                <td>${student.gender}</td>
+                <td>${student.guardian}</td>
+                <td>${student.guardianEmail}</td>
+                <td>${student.stream}</td>
+                <td>${student.school}</td>
+                <td>${student.house}</td>
+                <td><button class="delete-btn" onclick="deleteStudentRow(this)">Delete</button></td>
+            `;
+            studentsTableBody.appendChild(newRow);
+        }
+
+        // Assign a house in a round-robin manner
+        function assignHouse() {
+            lastAssignedHouseIndex = (lastAssignedHouseIndex + 1) % houses.length;
+            return houses[lastAssignedHouseIndex];
+        }
+
+        // Handle the registration form submission
+        if (registrationForm) {
+             registrationForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                 console.log("Registration form submitted.");
+
+                 const studentId = 'ID' + studentIdCounter++; // Generate unique ID
+
+                 const name = document.getElementById('reg-name').value.trim();
+                 const dob = document.getElementById('reg-dob').value;
+                 const gender = document.getElementById('reg-gender').value;
+                 const phone = document.getElementById('reg-phone').value.trim();
+                 const address = document.getElementById('reg-address').value.trim();
+                 const guardian = document.getElementById('reg-guardian').value.trim();
+                 const guardianPhone = document.getElementById('reg-guardianPhone').value.trim();
+                 const guardianEmail = document.getElementById('reg-guardianEmail').value.trim();
+                 const school = document.getElementById('reg-school').value; // Attendance type
+                 const stream = document.getElementById('reg-stream').value.trim();
+                 const imageInput = document.getElementById('reg-studentImage');
+
+                 if (!name || !dob || !gender || !address || !guardian || !guardianPhone || !guardianEmail || !school || !stream) {
+                     alert('Please fill in all required registration fields.');
+                     studentIdCounter--; // Decrement counter if validation fails
+                     return;
+                 }
+                 if (!validateEmail(guardianEmail)) {
+                     alert('Please enter a valid guardian email address.');
+                     studentIdCounter--;
+                     return;
+                 }
+
+                 const assignedHouse = assignHouse();
+                 let studentImage = null; // Default to null
+
+                function createAndSaveStudent(imageDataUrl) {
+                     const newStudent = {
+                        id: studentId, name, dob, gender, phone, address, guardian,
+                        guardianPhone, guardianEmail, school, stream, house: assignedHouse,
+                        image: imageDataUrl // Use the resolved data URL
+                    };
+
+                     const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
+                     savedStudents.push(newStudent);
+                     saveStudents(savedStudents); // Save the updated array
+                     addStudentToTable(newStudent); // Add to the visible table
+                     registrationForm.reset(); // Clear form
+                     console.log("Student registered:", newStudent);
+                     alert(`Student ${name} registered successfully with ID ${studentId}.`);
+                 }
+
+                 // Handle image upload
+                 if (imageInput.files && imageInput.files[0]) {
+                     const reader = new FileReader();
+                     reader.onload = function(e) {
+                         // Check image size again before saving (optional redundancy)
+                         if (e.target.result.length > 3 * 1024 * 1024) { // Approx 3MB limit for base64
+                              alert('Image file is too large after encoding. Please use a smaller image.');
+                              studentIdCounter--; // Rollback ID
+                              return;
+                         }
+                         createAndSaveStudent(e.target.result); // Pass base64 data URL
+                     };
+                     reader.onerror = function() {
+                          console.error("Error reading image file.");
+                          alert("Could not read image file. Registering student without image.");
+                           createAndSaveStudent(null); // Register without image on read error
+                     }
+                     reader.readAsDataURL(imageInput.files[0]);
+                 } else {
+                      createAndSaveStudent(null); // Register without image if none selected
+                 }
+             });
+        } else {
+             console.warn("Registration form element not found.");
+        }
+
+
+        // Function to delete a student row from the table and localStorage
+        function deleteStudentRow(button) {
+            const row = button.closest('tr');
+            const studentIdToDelete = row.cells[1].textContent; // Get ID from the second cell
+            const studentNameToDelete = row.cells[2].textContent; // Get Name for confirmation
+
+            if (confirm(`Are you sure you want to delete student ${studentNameToDelete} (ID: ${studentIdToDelete})?`)) {
+                 console.log("Deleting student with ID:", studentIdToDelete);
+                 const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
+                 const updatedStudents = savedStudents.filter(student => student.id !== studentIdToDelete);
+                 saveStudents(updatedStudents); // Save the filtered array
+                 row.remove(); // Remove row from the HTML table
+                 console.log("Student deleted.");
+            }
+        }
+
+
+        // --- Email Sending & Related Logic ---
+
+        // Search localStorage for guardian email based on student name input
+        function searchGuardianEmail(formType) {
+            if (mainContent.style.display !== 'block') return; // Only run if logged in
+
+            let nameInputId, emailInputId;
+            if (formType === 'checkin') {
+                nameInputId = 'name'; emailInputId = 'email';
+            } else if (formType === 'checkout') {
+                nameInputId = 'checkout-name'; emailInputId = 'checkout-email';
+            } else { return; }
+
+            const nameInput = document.getElementById(nameInputId);
+            const emailInput = document.getElementById(emailInputId);
+            if (!nameInput || !emailInput) return;
+
+            const name = nameInput.value.trim().toLowerCase(); // Search case-insensitive
+            const students = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
+
+            emailInput.value = ''; // Clear previous email first
 
             if (name) {
-                const student = students.find(student => student.name.toLowerCase() === name.toLowerCase());
-                if (student) {
-                    const guardianEmail = student.guardianEmail;
-                    // Set the guardian's email in the email field
-                    if (document.getElementById("name")) {
-                        document.getElementById("email").value = guardianEmail;
-                    }
-                    if (document.getElementById("checkout-name")) {
-                        document.getElementById("checkout-email").value = guardianEmail;
-                    }
+                // Find the first student matching the beginning of the name
+                const student = students.find(s => s.name.toLowerCase().startsWith(name));
+                if (student && student.guardianEmail) {
+                    console.log(`Auto-filled guardian email for ${student.name}: ${student.guardianEmail}`);
+                    emailInput.value = student.guardianEmail;
+                    // Optionally update the name field to the full matched name
+                    nameInput.value = student.name;
+                } else {
+                    console.log(`No guardian email found starting with "${name}". Manual entry required.`);
                 }
             }
         }
-    
-        // Function to send Check-In email
+
+        // Send Check-In Email via EmailJS
         function sendCheckInMail() {
-            var name = document.getElementById("name").value.trim();
-            var email = document.getElementById("email").value.trim();
-    
-            // Check if fields are empty
-            if (!name || !email) {
-                alert("Please fill in all fields.");
-                return;
-            }
-    
-            // Validate email format
-            if (!validateEmail(email)) {
-                alert("Please enter a valid email address.");
-                return;
-            }
-    
-            // Prepare parameters for EmailJS
-            var params = { 
-                name: name,
-                email: email,
-                message: "The student has arrived at school."
+             if (mainContent.style.display !== 'block') { alert("Please log in first."); return; }
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const currentSchoolName = schoolNameDisplay.textContent || "the school"; // Get school name from header
+
+            if (!name || !email) { alert("Please enter student name and guardian email."); return; }
+            if (!validateEmail(email)) { alert("Invalid guardian email address format."); return; }
+
+            var params = {
+                student_name: name,
+                guardian_email: email,
+                school_name: currentSchoolName,
+                message_type: "Student Check-In",
+                // Example: Customize full message if needed by your template
+                full_message: `Dear Guardian, this is to inform you that ${name} has safely checked into ${currentSchoolName}.`
             };
-    
+
+            // !!! REPLACE WITH YOUR ACTUAL EMAILJS SERVICE AND TEMPLATE IDS !!!
             const serviceID = "service_cc5v9ac";
             const templateID = "template_7026dua";
-    
+
+            console.log("Attempting to send Check-In email:", params);
+            alert("Sending check-in notification..."); // Provide user feedback
+
             emailjs.send(serviceID, templateID, params)
                 .then((res) => {
+                    console.log("Check-In email SUCCESS!", res.status, res.text);
                     document.getElementById("name").value = "";
                     document.getElementById("email").value = "";
-                    console.log("Check-In email sent successfully!", res);
-                    alert("Your check-in details have been sent successfully!");
+                    alert(`Check-in notification for ${name} sent successfully!`);
                 })
                 .catch((err) => {
-                    console.error("Failed to send Check-In email:", err);
-                    alert("Failed to send check-in details. Please try again.");
+                    console.error("Check-In email FAILED:", err);
+                    alert(`Failed to send check-in notification. Please check console (F12) for details. Error: ${JSON.stringify(err)}`);
                 });
         }
-    
-        // Function to send Check-Out email
+
+        // Send Check-Out Email via EmailJS
         function sendCheckOutMail() {
-            var name = document.getElementById("checkout-name").value.trim();
-            var email = document.getElementById("checkout-email").value.trim();
-            var reason = document.getElementById("checkout-reason").value.trim();
-    
-            if (!name || !email || !reason) {
-                alert("Please fill in all fields.");
-                return;
-            }
-    
-            if (!validateEmail(email)) {
-                alert("Please enter a valid email address.");
-                return;
-            }
-    
-            var params = { 
-                name: name,
-                email: email,
-                reason: reason,
-                message: "The student has moved out of school."
+             if (mainContent.style.display !== 'block') { alert("Please log in first."); return; }
+
+            const name = document.getElementById("checkout-name").value.trim();
+            const email = document.getElementById("checkout-email").value.trim();
+            const reason = document.getElementById("checkout-reason").value.trim();
+             const currentSchoolName = schoolNameDisplay.textContent || "the school";
+
+            if (!name || !email || !reason) { alert("Please fill in all check-out fields."); return; }
+            if (!validateEmail(email)) { alert("Invalid guardian email address format."); return; }
+
+            var params = {
+                student_name: name,
+                guardian_email: email,
+                checkout_reason: reason,
+                school_name: currentSchoolName,
+                message_type: "Student Check-Out",
+                // Example: Customize full message
+                full_message: `Dear Guardian, this is to inform you that ${name} has checked out from ${currentSchoolName}. Reason: ${reason}.`
             };
-    
-            const serviceID = "service_cc5v9ac";
-            const templateID = "template_tiofcf4";
-    
+
+             // !!! REPLACE WITH YOUR ACTUAL EMAILJS SERVICE AND TEMPLATE IDS !!!
+            const serviceID = "service_cc5v9ac"; // Often the same service ID
+            const templateID = "template_tiofcf4"; // MUST be the specific check-out template
+
+            console.log("Attempting to send Check-Out email:", params);
+             alert("Sending check-out notification..."); // Provide user feedback
+
             emailjs.send(serviceID, templateID, params)
                 .then((res) => {
-                    console.log("Check-Out email sent successfully!", res);
+                     console.log("Check-Out email SUCCESS!", res.status, res.text);
                     document.getElementById("checkout-name").value = "";
                     document.getElementById("checkout-email").value = "";
                     document.getElementById("checkout-reason").value = "";
-                    alert("Your check-out details have been sent successfully!");
+                    alert(`Check-out notification for ${name} sent successfully!`);
                 })
                 .catch((err) => {
-                    console.error("Failed to send Check-Out email:", err);
-                    alert("Failed to send check-out details. Please try again.");
+                    console.error("Check-Out email FAILED:", err);
+                    alert(`Failed to send check-out notification. Please check console (F12) for details. Error: ${JSON.stringify(err)}`);
                 });
         }
+
     </script>
+
 </body>
 </html>
