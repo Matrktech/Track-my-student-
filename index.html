@@ -52,52 +52,48 @@
           object-fit: contain;
           display: block;
           margin: 0 auto 10px auto;
-          /* --- ADDED ANIMATION FOR LOGO --- */
           animation: logoPulse 5s ease-in-out infinite;
         }
         .school-name {
           font-size: 40px;
           font-weight: bold;
           margin-top: 10px;
-          /* --- ADDED ANIMATION FOR SCHOOL NAME --- */
           animation: nameGlow 4s ease-in-out infinite;
-          /* Ensure positioning context if needed for complex animations later */
           position: relative;
         }
         .subtitle {
           font-size: 18px;
           margin-top: 5px;
           color: #ecf0f1;
-          /* --- ADDED ANIMATION FOR MOTTO --- */
           animation: mottoFade 4.5s ease-in-out infinite;
         }
         .header-links {
             margin-top: 15px;
         }
-        .header-links a, .header-links span {
-            margin: 0 10px; /* Slightly reduced margin */
-            color: #ecf0f1;
-            font-size: 15px; /* Slightly smaller header links */
+        .header-links button { /* Style buttons for consistency */
+            margin: 0 5px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 14px; /* Adjusted font size */
             cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .header-links button:hover {
+            opacity: 0.9;
+        }
+        .header-links a, .header-links span {
+            color: inherit; /* Inherit color from button */
             text-decoration: none;
+            display: inline-block; /* Ensure link takes up button space */
         }
-        .header-links a:hover, .header-links span:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-        #logout-link {
-            color: #e74c3c;
-        }
-        #logout-link:hover {
-            color: #c0392b;
-        }
-        /* Added style for Change Password Link */
-        #change-password-link {
-            color: #f1c40f; /* Yellowish color */
-        }
-         #change-password-link:hover {
-            color: #f39c12;
-        }
+        /* Specific button colors */
+        #checkin-btn { background-color: #3498DB; } /* Blue */
+        #database-btn { background-color: #f1c40f; } /* Yellow */
+        #changepw-btn { background-color: #9b59b6; } /* Purple */
+        #logout-btn { background-color: #e74c3c; display: none;} /* Red */ /* Hide initially */
+
 
         /* --- KEYFRAMES FOR ANIMATIONS --- */
         @keyframes logoPulse {
@@ -105,13 +101,11 @@
           50% { transform: scale(1.05); }
           100% { transform: scale(1); }
         }
-
         @keyframes nameGlow {
-          0% { text-shadow: 0 0 5px rgba(236, 240, 241, 0.5); } /* Use subtitle color for subtle glow */
+          0% { text-shadow: 0 0 5px rgba(236, 240, 241, 0.5); }
           50% { text-shadow: 0 0 15px rgba(236, 240, 241, 0.8); }
           100% { text-shadow: 0 0 5px rgba(236, 240, 241, 0.5); }
         }
-
         @keyframes mottoFade {
           0% { opacity: 0.8; }
           50% { opacity: 1; }
@@ -121,39 +115,60 @@
 
 
         /* --- Auth & Password Forms Styles --- */
-        .auth-container { /* Reused for password forms */
-            max-width: 500px;
-            margin: 50px auto;
+        .auth-container {
+            max-width: 600px; /* Slightly wider for house inputs */
+            margin: 30px auto; /* Reduced top margin */
             padding: 30px;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+         /* Specific width for login/forgot/change pw */
+         #login-section, #forgot-password-section, #change-password-section {
+             max-width: 500px;
+         }
         .auth-container h1 {
             text-align: center;
             margin-bottom: 25px;
             color: #2C3E50;
         }
         .form-control {
-            margin-bottom: 15px;
+            margin-bottom: 15px; /* Standard margin */
         }
+        .input-group .form-control {
+            margin-bottom: 0; /* Remove bottom margin when inside input-group */
+        }
+        .input-group {
+             margin-bottom: 15px; /* Add margin to the group instead */
+        }
+        .password-toggle {
+            cursor: pointer;
+            user-select: none; /* Prevent text selection */
+        }
+        .house-input-group label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+         .house-input-group input {
+             margin-bottom: 5px; /* Less margin between house inputs */
+         }
 
 
         /* --- Main Content Area Styles --- */
         #main-content .container.border {
             margin-top: 20px;
-            padding: 20px; /* Add padding to container */
+            padding: 20px;
         }
 
         /* Check-in/Out Form Specific Styles */
         .check-in-col {
-           background-color: #3498DB; /* Blue for check-in */
+           background-color: #3498DB;
            color: white;
            padding: 3rem;
            border-radius: 0.25rem 0 0 0.25rem;
         }
         .check-out-col {
-            background-color: #E74C3C; /* Red for check-out */
+            background-color: #E74C3C;
             color: white;
             padding: 3rem;
             border-radius: 0.25rem 0 0 0.25rem;
@@ -177,7 +192,8 @@
              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
              margin-top: 20px;
         }
-        #registrationForm {
+        /* Style for both registration and edit forms */
+        #registrationForm, #editStudentForm {
             max-width: 800px;
             margin: 0 auto 30px auto;
             padding: 20px;
@@ -185,12 +201,13 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-         #registrationForm label {
+         #registrationForm label, #editStudentForm label {
             font-weight: bold;
             margin-top: 10px;
             display: block;
         }
-         #registrationForm input, #registrationForm select {
+         #registrationForm input, #registrationForm select,
+         #editStudentForm input, #editStudentForm select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -199,7 +216,7 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
-        #registrationForm button {
+        #registrationForm button[type="submit"], #editStudentForm button[type="submit"] {
             background-color: #28a745;
             color: white;
             padding: 10px 20px;
@@ -209,18 +226,28 @@
             border-radius: 5px;
             transition: background-color 0.2s ease;
         }
-        #registrationForm button:hover {
+        #registrationForm button[type="submit"]:hover, #editStudentForm button[type="submit"]:hover {
             background-color: #218838;
         }
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
+        .action-btn { /* General class for action buttons in table */
             padding: 5px 10px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
             font-size: 14px;
+            margin-right: 5px; /* Space between buttons */
+            color: white;
             transition: background-color 0.2s ease;
+        }
+        .edit-btn {
+            background-color: #ffc107; /* Yellow */
+            color: #333;
+        }
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+        .delete-btn {
+            background-color: #dc3545; /* Red */
         }
         .delete-btn:hover {
             background-color: #c82333;
@@ -234,6 +261,7 @@
             border: 1px solid #ddd;
             text-align: left;
             padding: 12px;
+            vertical-align: middle;
         }
         #studentsTable th {
             background-color: #343a40;
@@ -249,6 +277,28 @@
             border-radius: 50%;
             vertical-align: middle;
         }
+         /* Modal specific styles */
+         .modal-body {
+             max-height: 70vh; /* Limit modal height */
+             overflow-y: auto; /* Add scroll if needed */
+         }
+         #editStudentForm {
+             margin-bottom: 0; /* Remove bottom margin inside modal */
+             border: none;
+             background: none;
+             padding: 0;
+         }
+         /* Style for current image preview in edit modal */
+         #edit-current-image-preview {
+             max-width: 100px;
+             max-height: 100px;
+             margin-top: 5px;
+             margin-bottom: 15px;
+             display: block; /* Make it block to respect margins */
+             border: 1px solid #ddd;
+             padding: 2px;
+             border-radius: 4px;
+         }
 
     </style>
 </head>
@@ -264,44 +314,80 @@
             </div>
             <div class="form-group">
                 <label for="login-password">Password</label>
-                <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text password-toggle" onclick="togglePasswordVisibility(this)">Show</span>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
-        <!-- Added Forgot Password Link -->
         <span class="toggle-link fake-link" onclick="showForgotPasswordForm()">Forgot Password?</span>
         <span class="toggle-link fake-link" onclick="showSignup()">Don't have an account? Sign Up</span>
     </div>
 
     <!-- Signup Section -->
     <div id="signup-section" class="auth-container" style="display: none;">
-        <h1>Sign Up</h1>
+        <h1>Sign Up Your School</h1>
         <form id="signup-form" onsubmit="handleSignup(event)">
-            <!-- Signup form fields... -->
-             <div class="form-group">
-                 <label for="signup-school-name">School Name</label>
-                 <input type="text" class="form-control" id="signup-school-name" placeholder="Enter school name" required>
+             <div class="row">
+                 <div class="col-md-6">
+                     <div class="form-group">
+                         <label for="signup-school-name">School Name</label>
+                         <input type="text" class="form-control" id="signup-school-name" placeholder="Enter school name" required>
+                     </div>
+                     <div class="form-group">
+                         <label for="signup-motto">School Motto</label>
+                         <input type="text" class="form-control" id="signup-motto" placeholder="Enter school motto" required>
+                     </div>
+                     <div class="form-group">
+                         <label for="signup-logo">School Logo</label>
+                         <input type="file" class="form-control-file" id="signup-logo" accept="image/*">
+                         <small class="form-text text-muted">Optional. Max 2MB recommended.</small>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <div class="form-group">
+                         <label for="signup-email">Admin Email address</label>
+                         <input type="email" class="form-control" id="signup-email" placeholder="Enter email" required>
+                         <small class="form-text text-muted">This will be your login email.</small>
+                     </div>
+                     <div class="form-group">
+                         <label for="signup-password">Password</label>
+                         <div class="input-group">
+                             <input type="password" class="form-control" id="signup-password" placeholder="Password" required>
+                             <div class="input-group-append">
+                                <span class="input-group-text password-toggle" onclick="togglePasswordVisibility(this)">Show</span>
+                             </div>
+                         </div>
+                         <small class="form-text text-danger">Warning: Password stored insecurely.</small>
+                     </div>
+                 </div>
              </div>
-             <div class="form-group">
-                 <label for="signup-motto">School Motto</label>
-                 <input type="text" class="form-control" id="signup-motto" placeholder="Enter school motto" required>
+             <hr>
+             <!-- House Input Section -->
+             <div class="house-input-group">
+                 <h5 class="text-center">Define School Houses</h5>
+                 <p class="text-center text-muted small">Enter the names for the four houses used at your school.</p>
+                 <div class="row">
+                     <div class="col-md-6">
+                         <label for="signup-house1">House 1 Name</label>
+                         <input type="text" class="form-control" id="signup-house1" placeholder="e.g., Lions" required>
+                         <label for="signup-house2">House 2 Name</label>
+                         <input type="text" class="form-control" id="signup-house2" placeholder="e.g., Tigers" required>
+                     </div>
+                     <div class="col-md-6">
+                         <label for="signup-house3">House 3 Name</label>
+                         <input type="text" class="form-control" id="signup-house3" placeholder="e.g., Bears" required>
+                         <label for="signup-house4">House 4 Name</label>
+                         <input type="text" class="form-control" id="signup-house4" placeholder="e.g., Eagles" required>
+                     </div>
+                 </div>
              </div>
-              <div class="form-group">
-                 <label for="signup-logo">School Logo</label>
-                 <input type="file" class="form-control-file" id="signup-logo" accept="image/*">
-                  <small class="form-text text-muted">Optional. Max 2MB recommended (due to browser storage limits).</small>
-             </div>
-             <div class="form-group">
-                 <label for="signup-email">Admin Email address</label>
-                 <input type="email" class="form-control" id="signup-email" placeholder="Enter email" required>
-                  <small class="form-text text-muted">This will be your login email.</small>
-             </div>
-             <div class="form-group">
-                 <label for="signup-password">Password</label>
-                 <input type="password" class="form-control" id="signup-password" placeholder="Password" required>
-                  <small class="form-text text-danger">Warning: Password stored insecurely for this demo.</small>
-             </div>
-             <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+             <!-- End House Input Section -->
+             <hr>
+             <button type="submit" class="btn btn-success btn-block mt-3">Sign Up</button>
         </form>
          <span class="toggle-link fake-link" onclick="showLogin()">Already have an account? Login</span>
     </div>
@@ -309,12 +395,12 @@
     <!-- Forgot Password Section -->
     <div id="forgot-password-section" class="auth-container" style="display: none;">
         <h1>Forgot Password</h1>
-        <p class="text-center text-muted">Enter your email address. If it's registered, you'll be prompted to set a new password.</p>
-         <p class="text-center text-danger small"><strong>Demo Limitation:</strong> No email verification is sent. Password reset prompt appears immediately if email exists.</p>
+        <p class="text-center text-muted">Enter your email. If registered, you'll be prompted to set a new password.</p>
+         <p class="text-center text-danger small"><strong>Demo Limitation:</strong> No email sent. Reset prompt appears if email exists.</p>
         <form id="forgot-password-form" onsubmit="handleForgotPassword(event)">
             <div class="form-group">
                 <label for="forgot-email">Email address</label>
-                <input type="email" class="form-control" id="forgot-email" placeholder="Enter your registered email" required>
+                <input type="email" class="form-control" id="forgot-email" placeholder="Enter registered email" required>
             </div>
             <button type="submit" class="btn btn-warning btn-block">Submit</button>
         </form>
@@ -324,16 +410,14 @@
     <!-- Main Content (Hidden Initially) -->
     <div id="main-content" style="display: none;">
         <header>
-            <!-- The logo, name, and motto below will now use the animations defined in the CSS -->
             <img src="placeholder-logo.png" alt="School Logo" class="logo" id="school-logo">
             <div class="school-name" id="school-name-display">SCHOOL NAME PLACEHOLDER</div>
             <div class="subtitle" id="school-motto-display">Motto Placeholder</div>
             <div class="header-links">
-                 <a onclick="showCheckInOutView()">CHECK IN/OUT</a>
-                 <a onclick="showStudentManagementView()">DATABASE</a>
-                 <!-- Added Change Password Link -->
-                 <a id="change-password-link" onclick="showChangePasswordForm()">CHANGE PASSWORD</a>
-                 <span id="logout-link" onclick="handleLogout()" style="display: none;">Logout</span>
+                 <button id="checkin-btn" type="button" onclick="showCheckInOutView()">CHECK IN/OUT</button>
+                 <button id="database-btn" type="button" onclick="showStudentManagementView()">DATABASE</button>
+                 <button id="changepw-btn" type="button" onclick="showChangePasswordForm()">CHANGE PASSWORD</button>
+                 <button id="logout-btn" type="button" onclick="handleLogout()">Logout</button>
             </div>
         </header>
 
@@ -344,7 +428,7 @@
                 <div class="col-md-5 p-0 check-in-col d-flex flex-column justify-content-center align-items-center text-center">
                     <h1>Hi there!</h1>
                     <h4>Student Check-In</h4>
-                    <p>Fill out the form to notify the guardian of the student's arrival.</p>
+                    <p>Fill out the form to notify the guardian.</p>
                 </div>
                 <div class="col-md-7 py-4 form-side">
                     <h3>Check-In Form</h3>
@@ -354,7 +438,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Guardian Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Guardian email (auto-filled or enter manually)" required>
+                        <input type="email" class="form-control" id="email" placeholder="Guardian email (auto-filled)" required>
                     </div>
                     <button class="btn btn-primary" onclick="sendCheckInMail()">Submit Check-In</button>
                 </div>
@@ -364,7 +448,7 @@
                 <div class="col-md-5 p-0 check-out-col d-flex flex-column justify-content-center align-items-center text-center">
                      <h1>Goodbye!</h1>
                     <h4>Student Check-Out</h4>
-                    <p>Fill out the form to notify the guardian about the student's departure.</p>
+                    <p>Fill out the form to notify the guardian.</p>
                 </div>
                 <div class="col-md-7 py-4 form-side">
                     <h3>Check-Out Form</h3>
@@ -374,11 +458,11 @@
                     </div>
                     <div class="form-group">
                         <label for="checkout-email">Guardian Email</label>
-                        <input type="email" class="form-control" id="checkout-email" placeholder="Guardian email (auto-filled or enter manually)" required>
+                        <input type="email" class="form-control" id="checkout-email" placeholder="Guardian email (auto-filled)" required>
                     </div>
                     <div class="form-group">
                         <label for="checkout-reason">Reason for Check-Out</label>
-                        <input type="text" class="form-control" id="checkout-reason" placeholder="Enter reason (e.g., End of day, Appointment)" required>
+                        <input type="text" class="form-control" id="checkout-reason" placeholder="e.g., End of day, Appointment" required>
                     </div>
                     <button class="btn btn-danger" onclick="sendCheckOutMail()">Submit Check-Out</button>
                 </div>
@@ -387,7 +471,7 @@
 
         <!-- Student Management Section -->
         <div id="student-management-section" style="display: none;" class="container">
-             <h2><center>School Student Registration & Database</center></h2>
+             <h2><center>Student Registration & Database</center></h2>
              <div class="text-center mb-4">
                  <button onclick="handleChangePin()" class="btn btn-warning">
                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill mr-2" viewBox="0 0 16 16"> <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/> </svg>
@@ -398,7 +482,7 @@
              <form id="registrationForm">
                  <h3>Register New Student</h3>
                  <div class="row">
-                     <div class="col-md-6">
+                      <div class="col-md-6">
                          <label for="reg-name">Full Name</label>
                          <input type="text" id="reg-name" name="name" required>
                          <label for="reg-dob">Date of Birth</label>
@@ -410,7 +494,7 @@
                              <option value="Female">Female</option>
                              <option value="Other">Other</option>
                          </select>
-                         <label for="reg-phone">Student Phone Number</label>
+                         <label for="reg-phone">Student Phone</label>
                          <input type="tel" id="reg-phone" name="phone" placeholder="Optional">
                          <label for="reg-address">Home Address</label>
                          <input type="text" id="reg-address" name="address" required>
@@ -418,63 +502,154 @@
                      <div class="col-md-6">
                          <label for="reg-guardian">Guardian's Name</label>
                          <input type="text" id="reg-guardian" name="guardian" required>
-                         <label for="reg-guardianPhone">Guardian's Phone Number</label>
+                         <label for="reg-guardianPhone">Guardian's Phone</label>
                          <input type="tel" id="reg-guardianPhone" name="guardianPhone" required>
-                         <label for="reg-guardianEmail">Guardian's Email Address</label>
+                         <label for="reg-guardianEmail">Guardian's Email</label>
                          <input type="email" id="reg-guardianEmail" name="guardianEmail" required>
-                         <small class="form-text text-muted">Used for check-in/out notifications.</small>
+                         <small class="form-text text-muted">Used for check-in/out emails.</small>
                          <label for="reg-school">Attendance Type</label>
                          <select id="reg-school" name="school" required>
                              <option value="" disabled selected>Select Type</option>
                              <option value="Day Student">Day Student</option>
                              <option value="Boarding Student">Boarding Student</option>
                          </select>
-                         <label for="reg-stream">Class / Stream (e.g., S1A, S4 Blue)</label>
-                         <input type="text" id="reg-stream" name="stream" required>
-                         <label for="reg-studentImage">Upload Student Image</label>
+                         <label for="reg-stream">Class / Stream</label>
+                         <input type="text" id="reg-stream" name="stream" placeholder="e.g., S1A, Year 9 Blue" required>
+                         <label for="reg-studentImage">Student Image</label>
                          <input type="file" id="reg-studentImage" name="studentImage" accept="image/*" class="form-control-file">
-                         <small class="form-text text-muted">Optional. Small file size recommended.</small>
+                         <small class="form-text text-muted">Optional. Small size best.</small>
                      </div>
                  </div>
                  <button type="submit" class="mt-3">Register Student</button>
              </form>
              <!-- Registered Students Table -->
              <h3 class="mt-5">Registered Students List</h3>
-             <table id="studentsTable">
-                 <thead>
-                     <tr>
-                         <th>Image</th><th>ID</th><th>Name</th><th>DOB</th><th>Gender</th><th>Guardian</th>
-                         <th>Guardian Email</th><th>Class</th><th>Attendance</th><th>House</th><th>Actions</th>
-                     </tr>
-                 </thead>
-                 <tbody><!-- Data will be loaded here --></tbody>
-             </table>
+             <div class="table-responsive"> <!-- Make table scrollable on small screens -->
+                 <table id="studentsTable" class="table table-striped table-bordered"> <!-- Added bootstrap table classes -->
+                     <thead>
+                         <tr>
+                             <th>Image</th><th>ID</th><th>Name</th><th>DOB</th><th>Gender</th><th>Guardian</th>
+                             <th>Guardian Email</th><th>Class</th><th>Attendance</th><th>House</th><th>Actions</th>
+                         </tr>
+                     </thead>
+                     <tbody><!-- Data will be loaded here by loadStudents() --></tbody>
+                 </table>
+             </div>
         </div> <!-- End Student Management Section -->
 
         <!-- Change Password Section (Inside Main Content) -->
-        <div id="change-password-section" class="auth-container" style="display: none; margin-top: 30px;"> <!-- Added margin-top -->
+        <div id="change-password-section" class="auth-container" style="display: none; margin-top: 30px;">
             <h1>Change Password</h1>
-             <p class="text-center text-danger small"><strong>Warning:</strong> Passwords stored insecurely in this demo.</p>
+             <p class="text-center text-danger small"><strong>Warning:</strong> Passwords stored insecurely.</p>
             <form id="change-password-form" onsubmit="handleChangePassword(event)">
                  <div class="form-group">
                     <label for="current-password">Current Password</label>
-                    <input type="password" class="form-control" id="current-password" placeholder="Enter your current password" required>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="current-password" placeholder="Current password" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text password-toggle" onclick="togglePasswordVisibility(this)">Show</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="new-password">New Password</label>
-                    <input type="password" class="form-control" id="new-password" placeholder="Enter new password" required>
-                     <small class="form-text text-muted">Minimum 6 characters recommended.</small>
+                     <div class="input-group">
+                        <input type="password" class="form-control" id="new-password" placeholder="New password" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text password-toggle" onclick="togglePasswordVisibility(this)">Show</span>
+                        </div>
+                    </div>
+                     <small class="form-text text-muted">Min 6 characters.</small>
                 </div>
                  <div class="form-group">
                     <label for="confirm-new-password">Confirm New Password</label>
-                    <input type="password" class="form-control" id="confirm-new-password" placeholder="Confirm new password" required>
+                     <div class="input-group">
+                        <input type="password" class="form-control" id="confirm-new-password" placeholder="Confirm new password" required>
+                         <div class="input-group-append">
+                            <span class="input-group-text password-toggle" onclick="togglePasswordVisibility(this)">Show</span>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-warning btn-block">Update Password</button>
-                 <button type="button" class="btn btn-secondary btn-block mt-2" onclick="showCheckInOutView()">Cancel</button> <!-- Cancel button -->
+                 <button type="button" class="btn btn-secondary btn-block mt-2" onclick="showCheckInOutView()">Cancel</button>
             </form>
         </div>
 
     </div><!-- End Main Content -->
+
+    <!-- Edit Student Modal -->
+    <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg"> <!-- Larger modal -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editStudentModalLabel">Edit Student Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editStudentForm" onsubmit="handleEditStudentSubmit(event)">
+                <!-- Hidden fields to store ID and current image -->
+                <input type="hidden" id="edit-studentId" name="studentId">
+                <input type="hidden" id="edit-currentImageUrl" name="currentImageUrl">
+
+                 <div class="row">
+                      <div class="col-md-6">
+                         <label for="edit-name">Full Name</label>
+                         <input type="text" id="edit-name" name="name" class="form-control" required>
+                         <label for="edit-dob">Date of Birth</label>
+                         <input type="date" id="edit-dob" name="dob" class="form-control" required>
+                         <label for="edit-gender">Gender</label>
+                         <select id="edit-gender" name="gender" class="form-control" required>
+                             <option value="Male">Male</option>
+                             <option value="Female">Female</option>
+                             <option value="Other">Other</option>
+                         </select>
+                         <label for="edit-phone">Student Phone</label>
+                         <input type="tel" id="edit-phone" name="phone" class="form-control" placeholder="Optional">
+                         <label for="edit-address">Home Address</label>
+                         <input type="text" id="edit-address" name="address" class="form-control" required>
+                     </div>
+                     <div class="col-md-6">
+                         <label for="edit-guardian">Guardian's Name</label>
+                         <input type="text" id="edit-guardian" name="guardian" class="form-control" required>
+                         <label for="edit-guardianPhone">Guardian's Phone</label>
+                         <input type="tel" id="edit-guardianPhone" name="guardianPhone" class="form-control" required>
+                         <label for="edit-guardianEmail">Guardian's Email</label>
+                         <input type="email" id="edit-guardianEmail" name="guardianEmail" class="form-control" required>
+                         <label for="edit-school">Attendance Type</label>
+                         <select id="edit-school" name="school" class="form-control" required>
+                              <option value="Day Student">Day Student</option>
+                              <option value="Boarding Student">Boarding Student</option>
+                         </select>
+                         <label for="edit-stream">Class / Stream</label>
+                         <input type="text" id="edit-stream" name="stream" class="form-control" required>
+                         <label for="edit-house">House</label>
+                         <!-- House will be loaded dynamically if needed, or just displayed -->
+                         <input type="text" id="edit-house" name="house" class="form-control" readonly> <!-- Made readonly for now -->
+
+                         <label for="edit-studentImage">Upload New Image (Optional)</label>
+                         <img id="edit-current-image-preview" src="placeholder-logo.png" alt="Current Image">
+                         <input type="file" id="edit-studentImage" name="studentImage" accept="image/*" class="form-control-file">
+                         <small class="form-text text-muted">Select a new file only if you want to change the image.</small>
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary">Save Changes</button>
+                 </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Edit Student Modal -->
+
+
+    <!-- Bootstrap JS and jQuery (Required for Modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
 
     <script>
         // --- Constants ---
@@ -483,16 +658,19 @@
         const STUDENTS_KEY = 'students';
         const ADMIN_PIN_KEY = 'adminAccessPin';
         const DEFAULT_ADMIN_PIN = "1234";
+        const DEFAULT_HOUSES = ["Alpha", "Beta", "Gamma", "Delta"]; // Fallback
 
         // --- DOM Elements ---
         const loginSection = document.getElementById('login-section');
         const signupSection = document.getElementById('signup-section');
-        const forgotPasswordSection = document.getElementById('forgot-password-section'); // New
+        const forgotPasswordSection = document.getElementById('forgot-password-section');
         const mainContent = document.getElementById('main-content');
-        const logoutLink = document.getElementById('logout-link');
+        const logoutButton = document.getElementById('logout-btn');
         const checkInOutForms = document.getElementById('check-in-out-forms');
         const studentManagementSection = document.getElementById('student-management-section');
-        const changePasswordSection = document.getElementById('change-password-section'); // New
+        const changePasswordSection = document.getElementById('change-password-section');
+        const editStudentModal = document.getElementById('editStudentModal'); // Modal
+        const editStudentForm = document.getElementById('editStudentForm'); // Modal Form
 
         // Header elements
         const schoolLogo = document.getElementById('school-logo');
@@ -503,10 +681,10 @@
         const registrationForm = document.getElementById('registrationForm');
         const studentsTableBody = document.querySelector('#studentsTable tbody');
 
-        // --- Student Management Globals ---
+        // --- Globals ---
         let studentIdCounter = 1;
-        const houses = ["Willis", "Stuat", "Hannington", "Brown"];
-        let lastAssignedHouseIndex = -1;
+        let currentUserHouses = [...DEFAULT_HOUSES]; // Houses for the currently logged-in school
+        let currentUserHouseIndex = -1; // Index for round-robin assignment
 
         // --- Initialization ---
         window.onload = function () {
@@ -516,7 +694,6 @@
                 console.log("EmailJS Initialized.");
             } catch (e) {
                 console.error("Failed to initialize EmailJS:", e);
-                alert("Error initializing email service. Notifications might not work.");
             }
 
             // Check login status
@@ -527,14 +704,14 @@
                 if (userData) {
                     showMainContent(userData);
                 } else {
-                    handleLogout(); // Data inconsistency
+                    handleLogout();
                 }
             } else {
                 showLogin();
             }
         };
 
-        // --- Utility Function to get the stored PIN ---
+        // --- Utility Function to get PIN ---
         function getStoredPin() {
             const storedPin = localStorage.getItem(ADMIN_PIN_KEY);
             return storedPin === null || storedPin === "" ? DEFAULT_ADMIN_PIN : storedPin;
@@ -544,12 +721,15 @@
         function hideAllSections() {
             loginSection.style.display = 'none';
             signupSection.style.display = 'none';
-            forgotPasswordSection.style.display = 'none'; // Hide forgot pw
+            forgotPasswordSection.style.display = 'none';
             mainContent.style.display = 'none';
-            // Also hide sections within mainContent if they exist
             if (checkInOutForms) checkInOutForms.style.display = 'none';
             if (studentManagementSection) studentManagementSection.style.display = 'none';
-            if (changePasswordSection) changePasswordSection.style.display = 'none'; // Hide change pw
+            if (changePasswordSection) changePasswordSection.style.display = 'none';
+             // Ensure modal is hidden if user navigates away while it's open
+             if ($ && $.fn.modal) { // Check if jQuery and Bootstrap modal are loaded
+                $('#editStudentModal').modal('hide');
+             }
         }
 
         function showLogin() {
@@ -570,16 +750,21 @@
         function showMainContent(userData) {
             hideAllSections();
             mainContent.style.display = 'block';
-            logoutLink.style.display = 'inline'; // Show logout link
+            logoutButton.style.display = 'inline-block';
             updateHeader(userData);
-            loadStudents(); // Load student data
-            showCheckInOutView(); // Default view after login
+
+            // Set current school's houses for assignment
+            currentUserHouses = (userData.houses && userData.houses.length === 4) ? userData.houses : [...DEFAULT_HOUSES];
+            currentUserHouseIndex = -1; // Reset index on login
+            console.log("Using houses:", currentUserHouses);
+
+            loadStudents(); // Load student data *after* setting houses if needed
+            showCheckInOutView(); // Default view
         }
 
-        // Functions to toggle between main content views
         function showCheckInOutView() {
             if (studentManagementSection) studentManagementSection.style.display = 'none';
-            if (changePasswordSection) changePasswordSection.style.display = 'none'; // Hide change pw
+            if (changePasswordSection) changePasswordSection.style.display = 'none';
             if (checkInOutForms) checkInOutForms.style.display = 'block';
              console.log("Showing Check In/Out View");
         }
@@ -587,77 +772,58 @@
         function showStudentManagementView() {
             console.log("Attempting to show Student Management View...");
             const correctPin = getStoredPin();
-            const enteredPin = prompt("Enter the Admin PIN to access the Student Database:");
+            const enteredPin = prompt("Enter Admin PIN:");
 
-            if (enteredPin === null) { return; } // Cancelled
+            if (enteredPin === null) { return; }
 
             if (enteredPin === correctPin) {
                 if (checkInOutForms) checkInOutForms.style.display = 'none';
-                if (changePasswordSection) changePasswordSection.style.display = 'none'; // Hide change pw
+                if (changePasswordSection) changePasswordSection.style.display = 'none';
                 if (studentManagementSection) studentManagementSection.style.display = 'block';
                 console.log("PIN Correct. Showing Student Management View");
             } else {
-                alert("Incorrect PIN entered. Access denied.");
+                alert("Incorrect PIN.");
                 console.log("Incorrect PIN entered.");
             }
         }
 
-        // NEW Function to show Change Password Form
         function showChangePasswordForm() {
              if (checkInOutForms) checkInOutForms.style.display = 'none';
              if (studentManagementSection) studentManagementSection.style.display = 'none';
              if (changePasswordSection) {
                  changePasswordSection.style.display = 'block';
-                 // Clear previous values
                  document.getElementById('change-password-form').reset();
+                 resetPasswordToggles(changePasswordSection);
              }
              console.log("Showing Change Password Form");
         }
 
 
-        // --- NEW FUNCTION: Handle PIN Change ---
+        // --- Handle PIN Change ---
         function handleChangePin() {
-            // ...(Keep existing handleChangePin function as is)...
              console.log("Attempting to change Admin PIN...");
              const currentPin = getStoredPin();
+             const enteredCurrentPin = prompt("Enter CURRENT Admin PIN:");
+             if (enteredCurrentPin === null) { alert("Cancelled."); return; }
+             if (enteredCurrentPin !== currentPin) { alert("Incorrect current PIN."); return; }
 
-             // 1. Verify Current PIN
-             const enteredCurrentPin = prompt("Enter your CURRENT Admin PIN to verify:");
-             if (enteredCurrentPin === null) {
-                 alert("PIN change cancelled.");
-                 return;
-             }
-             if (enteredCurrentPin !== currentPin) {
-                 alert("Incorrect current PIN. PIN change failed.");
-                 return;
-             }
+             const newPin = prompt("Enter NEW Admin PIN:");
+             if (newPin === null || newPin.trim() === "") { alert("Cancelled or new PIN empty."); return; }
 
-             // 2. Get New PIN
-             const newPin = prompt("Enter the NEW Admin PIN (leave blank to cancel):");
-             if (newPin === null || newPin.trim() === "") {
-                 alert("PIN change cancelled or new PIN empty.");
-                 return;
-             }
+             const confirmNewPin = prompt("CONFIRM NEW Admin PIN:");
+             if (confirmNewPin === null) { alert("Cancelled."); return; }
 
-             // 3. Confirm New PIN
-             const confirmNewPin = prompt("CONFIRM the NEW Admin PIN:");
-             if (confirmNewPin === null) {
-                  alert("PIN change cancelled.");
-                  return;
-             }
-
-             // 4. Validate and Save
              if (newPin === confirmNewPin) {
                  try {
                      localStorage.setItem(ADMIN_PIN_KEY, newPin);
                      alert("Admin PIN changed successfully!");
-                     console.log("Admin PIN changed successfully.");
+                     console.log("Admin PIN changed.");
                  } catch (e) {
-                      console.error("Error saving new PIN to localStorage:", e);
-                      alert("An error occurred while saving the new PIN. Please try again.");
+                      console.error("Error saving new PIN:", e);
+                      alert("Error saving new PIN.");
                  }
              } else {
-                 alert("New PINs do not match. PIN change failed.");
+                 alert("New PINs do not match.");
              }
         }
 
@@ -674,197 +840,147 @@
 
         // --- Authentication Functions ---
         function handleSignup(event) {
-            // ...(Keep existing handleSignup function as is)...
              event.preventDefault();
              console.log("Handling signup...");
 
              const schoolName = document.getElementById('signup-school-name').value.trim();
              const motto = document.getElementById('signup-motto').value.trim();
              const email = document.getElementById('signup-email').value.trim().toLowerCase();
-             const password = document.getElementById('signup-password').value; // Plain text!
+             const password = document.getElementById('signup-password').value;
              const logoFile = document.getElementById('signup-logo').files[0];
+             // Get house names
+             const house1 = document.getElementById('signup-house1').value.trim();
+             const house2 = document.getElementById('signup-house2').value.trim();
+             const house3 = document.getElementById('signup-house3').value.trim();
+             const house4 = document.getElementById('signup-house4').value.trim();
+             const houseNames = [house1, house2, house3, house4];
 
-             if (!schoolName || !motto || !email || !password) { alert('Please fill in all required fields.'); return; }
-             if (!validateEmail(email)) { alert('Please enter a valid email address.'); return; }
-              if (password.length < 6) { // Basic check
-                 alert('Password should be at least 6 characters long.'); return;
-              }
+             if (!schoolName || !motto || !email || !password || !house1 || !house2 || !house3 || !house4) {
+                 alert('Please fill in all required fields, including the four house names.'); return;
+             }
+             if (!validateEmail(email)) { alert('Invalid email address.'); return; }
+             if (password.length < 6) { alert('Password must be at least 6 characters.'); return; }
 
              const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
-             if (accounts[email]) { alert('Account with this email already exists. Please login.'); return; }
+             if (accounts[email]) { alert('Account with this email already exists.'); return; }
 
              let logoDataUrl = null;
              if (logoFile) {
                   if (logoFile.size > 2 * 1024 * 1024) { alert('Logo file too large (Max 2MB).'); return; }
                  const reader = new FileReader();
-                 reader.onloadend = () => saveAccount(accounts, email, password, schoolName, motto, reader.result);
-                 reader.onerror = () => { console.error("Error reading logo file."); alert('Could not process logo file. Signing up without logo.'); saveAccount(accounts, email, password, schoolName, motto, null); }
+                 reader.onloadend = () => saveAccount(accounts, email, password, schoolName, motto, logoDataUrl, houseNames); // Pass houses
+                 reader.onerror = () => { console.error("Error reading logo file."); alert('Error processing logo. Signing up without logo.'); saveAccount(accounts, email, password, schoolName, motto, null, houseNames); } // Pass houses
                  reader.readAsDataURL(logoFile);
              } else {
-                  saveAccount(accounts, email, password, schoolName, motto, null);
+                  saveAccount(accounts, email, password, schoolName, motto, null, houseNames); // Pass houses
              }
         }
 
-        function saveAccount(accounts, email, password, schoolName, motto, logoDataUrl) {
-             // *** WARNING: Insecure password storage! ***
-            accounts[email] = { password: password, schoolName: schoolName, motto: motto, logoDataUrl: logoDataUrl };
+        // Updated saveAccount to include houses
+        function saveAccount(accounts, email, password, schoolName, motto, logoDataUrl, houseNames) {
+            // *** WARNING: Insecure password storage! ***
+            accounts[email] = {
+                password: password,
+                schoolName: schoolName,
+                motto: motto,
+                logoDataUrl: logoDataUrl,
+                houses: houseNames // Store the house names array
+            };
             try {
                 localStorage.setItem(SCHOOL_ACCOUNTS_KEY, JSON.stringify(accounts));
-                console.log("Account created successfully for:", email);
+                console.log("Account created successfully for:", email, "with houses:", houseNames);
                 alert('Account created successfully! Please login.');
                 document.getElementById('signup-form').reset();
+                resetPasswordToggles(signupSection);
                 showLogin();
             } catch (e) {
-                 console.error("Error saving account to localStorage:", e);
-                 if (e.name === 'QuotaExceededError') { alert('Could not save account. Storage limit reached (maybe large logo).'); }
-                 else { alert('An error occurred saving your account.'); }
-                 delete accounts[email]; // Attempt cleanup
+                 console.error("Error saving account:", e);
+                 alert('Error saving account. Storage might be full.');
+                 delete accounts[email]; // Cleanup failed attempt
                  localStorage.setItem(SCHOOL_ACCOUNTS_KEY, JSON.stringify(accounts));
             }
         }
 
+
         function handleLogin(event) {
-            // ...(Keep existing handleLogin function as is)...
             event.preventDefault();
-            console.log("Handling login...");
             const email = document.getElementById('login-email').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
 
-            if (!email || !password) { alert('Please enter email and password.'); return; }
+            if (!email || !password) { alert('Enter email and password.'); return; }
 
             const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
             const userData = accounts[email];
 
-            // *** WARNING: Insecure password check! ***
-            if (userData && userData.password === password) {
+            if (userData && userData.password === password) { // Insecure check
                 console.log("Login successful for:", email);
-                sessionStorage.setItem(LOGGED_IN_USER_KEY, email); // Use session storage
+                sessionStorage.setItem(LOGGED_IN_USER_KEY, email);
                 document.getElementById('login-form').reset();
-                showMainContent(userData);
+                resetPasswordToggles(loginSection);
+                showMainContent(userData); // Pass full user data
             } else {
-                console.log("Login failed for:", email);
                 alert('Invalid email or password.');
             }
         }
 
-        // NEW Function: Handle Forgot Password
         function handleForgotPassword(event) {
             event.preventDefault();
-            console.log("Handling forgot password...");
             const email = document.getElementById('forgot-email').value.trim().toLowerCase();
-            if (!validateEmail(email)) { alert('Please enter a valid email address.'); return; }
-
+            if (!validateEmail(email)) { alert('Invalid email.'); return; }
             const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
+            if (!accounts[email]) { alert('Email not found.'); return; }
 
-            if (!accounts[email]) {
-                alert('Email address not found in our records.');
-                return;
-            }
-
-            // *** INSECURE DEMO STEP: Prompt directly for new password ***
-            // In a real app, send a reset link/code via email first.
-            const newPassword = prompt(`Email found for ${email}.\nEnter a new password (min 6 characters):`);
-
-            if (newPassword === null) {
-                 alert('Password reset cancelled.');
-                 return;
-            }
-            if (newPassword.length < 6) {
-                 alert('New password must be at least 6 characters long. Password not reset.');
-                 return;
-            }
-
-             const confirmNewPassword = prompt("Confirm the new password:");
-
-             if (newPassword === confirmNewPassword) {
-                 // Update the password in the accounts object
-                 accounts[email].password = newPassword; // Still storing plain text!
+            const newPassword = prompt(`Email found. Enter new password (min 6 chars):`);
+            if (newPassword === null) { alert('Cancelled.'); return; }
+            if (newPassword.length < 6) { alert('Password too short.'); return; }
+            const confirmNewPassword = prompt("Confirm new password:");
+            if (newPassword === confirmNewPassword) {
+                 accounts[email].password = newPassword; // Insecure update
                  try {
                      localStorage.setItem(SCHOOL_ACCOUNTS_KEY, JSON.stringify(accounts));
-                     console.log("Password reset successfully for:", email);
-                     alert('Password reset successfully! You can now login with your new password.');
+                     alert('Password reset successfully! Login with new password.');
                      document.getElementById('forgot-password-form').reset();
-                     showLogin(); // Go back to login
-                 } catch (e) {
-                     console.error("Error saving updated accounts:", e);
-                     alert("An error occurred while saving the new password.");
-                 }
-             } else {
-                 alert('Passwords do not match. Password not reset.');
-             }
+                     showLogin();
+                 } catch (e) { alert("Error saving new password."); }
+             } else { alert('Passwords do not match.'); }
         }
 
-        // NEW Function: Handle Change Password (when logged in)
         function handleChangePassword(event) {
              event.preventDefault();
-             console.log("Handling change password...");
-
              const currentPassword = document.getElementById('current-password').value;
              const newPassword = document.getElementById('new-password').value;
              const confirmNewPassword = document.getElementById('confirm-new-password').value;
-
              const loggedInEmail = sessionStorage.getItem(LOGGED_IN_USER_KEY);
 
-             if (!loggedInEmail) {
-                 alert("Error: Not logged in. Cannot change password.");
-                 handleLogout(); // Log out if session state is weird
-                 return;
-             }
+             if (!loggedInEmail) { alert("Not logged in."); handleLogout(); return; }
+             if (!currentPassword || !newPassword || !confirmNewPassword) { alert("Fill all fields."); return; }
+             if (newPassword.length < 6) { alert("New password too short."); return; }
+             if (newPassword !== confirmNewPassword) { alert("New passwords don't match."); return; }
 
-             if (!currentPassword || !newPassword || !confirmNewPassword) {
-                 alert("Please fill in all password fields.");
-                 return;
-             }
+             const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
+             const userData = accounts[loggedInEmail];
+             if (!userData) { alert("User data error."); handleLogout(); return; }
+             if (userData.password !== currentPassword) { alert("Incorrect current password."); return; } // Insecure check
+             if (currentPassword === newPassword) { alert("New password same as old."); return; }
 
-             if (newPassword.length < 6) {
-                 alert("New password must be at least 6 characters long.");
-                 return;
-             }
-
-             if (newPassword !== confirmNewPassword) {
-                 alert("New passwords do not match.");
-                 return;
-             }
-
-              const accounts = JSON.parse(localStorage.getItem(SCHOOL_ACCOUNTS_KEY) || '{}');
-              const userData = accounts[loggedInEmail];
-
-              if (!userData) {
-                   alert("Error: User data not found. Cannot change password.");
-                   handleLogout();
-                   return;
-              }
-
-              // *** WARNING: Insecure password comparison! ***
-              if (userData.password !== currentPassword) {
-                   alert("Incorrect current password.");
-                   return;
-              }
-
-              if (currentPassword === newPassword) {
-                   alert("New password cannot be the same as the current password.");
-                   return;
-              }
-
-              // All checks passed, update the password
-              userData.password = newPassword; // Still plain text!
-              try {
+             userData.password = newPassword; // Insecure update
+             try {
                    localStorage.setItem(SCHOOL_ACCOUNTS_KEY, JSON.stringify(accounts));
-                   console.log("Password changed successfully for:", loggedInEmail);
                    alert("Password changed successfully!");
                    document.getElementById('change-password-form').reset();
-                   showCheckInOutView(); // Go back to default view after success
-              } catch (e) {
-                    console.error("Error saving updated password:", e);
-                    alert("An error occurred while changing the password.");
-              }
+                   resetPasswordToggles(changePasswordSection);
+                   showCheckInOutView();
+              } catch (e) { alert("Error changing password."); }
         }
 
 
         function handleLogout() {
-            console.log("Handling logout...");
+            console.log("Logging out...");
             sessionStorage.removeItem(LOGGED_IN_USER_KEY);
-            showLogin(); // Go back to login screen, which hides everything else
+            logoutButton.style.display = 'none';
+            currentUserHouses = [...DEFAULT_HOUSES]; // Reset houses to default
+            currentUserHouseIndex = -1;
+            showLogin();
         }
 
 
@@ -874,62 +990,101 @@
             return re.test(String(email).toLowerCase());
         }
 
+        function togglePasswordVisibility(toggleElement) {
+            const passwordInput = toggleElement.parentElement.previousElementSibling;
+            if (passwordInput && (passwordInput.type === 'password' || passwordInput.type === 'text')) {
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                toggleElement.textContent = isPassword ? "Hide" : "Show";
+            }
+        }
+
+        function resetPasswordToggles(containerElement) {
+            const toggles = containerElement.querySelectorAll('.password-toggle');
+            toggles.forEach(toggle => {
+                const passwordInput = toggle.parentElement.previousElementSibling;
+                if (passwordInput && passwordInput.type === 'text') {
+                    passwordInput.type = 'password';
+                }
+                toggle.textContent = 'Show';
+            });
+        }
+
         // --- Student Management Functions ---
         function loadStudents() {
-            // ...(Keep existing loadStudents function as is)...
-             if (!studentsTableBody) return; // Exit if table element not found
-             console.log("Loading students from localStorage...");
-             studentsTableBody.innerHTML = ''; // Clear existing table rows
+             if (!studentsTableBody) return;
+             console.log("Loading students...");
+             studentsTableBody.innerHTML = ''; // Clear table
              const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
              let maxId = 0;
              savedStudents.forEach(student => {
                  addStudentToTable(student);
-                 const idNum = parseInt(student.id.replace('ID', ''), 10);
+                 const idNum = parseInt(String(student.id || '').replace(/[^0-9]/g, ''), 10);
                  if (!isNaN(idNum) && idNum > maxId) { maxId = idNum; }
              });
-             studentIdCounter = maxId + 1; // Set counter to next available ID
+             studentIdCounter = maxId + 1;
               console.log(`Students loaded. Next ID: ${studentIdCounter}`);
         }
 
         function saveStudents(students) {
-            // ...(Keep existing saveStudents function as is)...
              try {
                   localStorage.setItem(STUDENTS_KEY, JSON.stringify(students));
-                  console.log("Students array saved to localStorage.");
+                  console.log("Students array saved.");
              } catch (e) {
-                  console.error("Error saving students to localStorage:", e);
-                  alert("Error saving student data. Storage might be full.");
+                  console.error("Error saving students:", e);
+                  alert("Error saving student data.");
              }
         }
 
         function addStudentToTable(student) {
-            // ...(Keep existing addStudentToTable function as is)...
             if (!studentsTableBody) return;
-             const newRow = document.createElement('tr');
+             const newRow = studentsTableBody.insertRow();
+             // Add data-id attribute to the row for easier selection later
+             newRow.setAttribute('data-id', student.id || '');
+
+             // Sanitize output slightly - prevent potential HTML injection from names/etc.
+             const sanitize = (str) => {
+                 if (!str) return 'N/A';
+                 const temp = document.createElement('div');
+                 temp.textContent = str;
+                 return temp.innerHTML;
+             };
+
              newRow.innerHTML = `
-                 <td><img src="${student.image || 'placeholder-logo.png'}" alt="Student Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"></td>
-                 <td>${student.id}</td><td>${student.name}</td><td>${student.dob}</td><td>${student.gender}</td>
-                 <td>${student.guardian}</td><td>${student.guardianEmail}</td><td>${student.stream}</td>
-                 <td>${student.school}</td><td>${student.house}</td>
-                 <td><button class="delete-btn" onclick="deleteStudentRow(this)">Delete</button></td>
+                 <td><img src="${student.image || 'placeholder-logo.png'}" alt="Image"></td>
+                 <td>${sanitize(student.id)}</td>
+                 <td>${sanitize(student.name)}</td>
+                 <td>${sanitize(student.dob)}</td>
+                 <td>${sanitize(student.gender)}</td>
+                 <td>${sanitize(student.guardian)}</td>
+                 <td>${sanitize(student.guardianEmail)}</td>
+                 <td>${sanitize(student.stream)}</td>
+                 <td>${sanitize(student.school)}</td>
+                 <td>${sanitize(student.house)}</td>
+                 <td>
+                     <button class="action-btn edit-btn" onclick="editStudentRow(this)">Edit</button>
+                     <button class="action-btn delete-btn" onclick="deleteStudentRow(this)">Delete</button>
+                 </td>
              `;
-             studentsTableBody.appendChild(newRow);
+             // No need to appendChild since we used insertRow()
         }
 
+        // Updated assignHouse to use school-specific houses
         function assignHouse() {
-            // ...(Keep existing assignHouse function as is)...
-            lastAssignedHouseIndex = (lastAssignedHouseIndex + 1) % houses.length;
-            return houses[lastAssignedHouseIndex];
+            if (!currentUserHouses || currentUserHouses.length === 0) {
+                console.warn("No valid houses defined for this school, using defaults.");
+                currentUserHouses = [...DEFAULT_HOUSES]; // Use default if none set
+            }
+            currentUserHouseIndex = (currentUserHouseIndex + 1) % currentUserHouses.length;
+            return currentUserHouses[currentUserHouseIndex];
         }
 
         if (registrationForm) {
-            // ...(Keep existing registrationForm submit listener as is)...
              registrationForm.addEventListener('submit', function(event) {
                  event.preventDefault();
-                  console.log("Registration form submitted.");
-                  const studentId = 'ID' + studentIdCounter++; // Generate unique ID
+                  console.log("Registering student...");
+                  const studentId = 'ID' + studentIdCounter++;
                   const name = document.getElementById('reg-name').value.trim();
-                  // ... (get all other form fields) ...
                   const dob = document.getElementById('reg-dob').value;
                   const gender = document.getElementById('reg-gender').value;
                   const phone = document.getElementById('reg-phone').value.trim();
@@ -937,67 +1092,236 @@
                   const guardian = document.getElementById('reg-guardian').value.trim();
                   const guardianPhone = document.getElementById('reg-guardianPhone').value.trim();
                   const guardianEmail = document.getElementById('reg-guardianEmail').value.trim();
-                  const school = document.getElementById('reg-school').value; // Attendance type
+                  const school = document.getElementById('reg-school').value;
                   const stream = document.getElementById('reg-stream').value.trim();
                   const imageInput = document.getElementById('reg-studentImage');
 
                   if (!name || !dob || !gender || !address || !guardian || !guardianPhone || !guardianEmail || !school || !stream) {
-                      alert('Please fill in all required registration fields.'); studentIdCounter--; return;
+                      alert('Fill all required registration fields.'); studentIdCounter--; return;
                   }
                   if (!validateEmail(guardianEmail)) {
-                      alert('Please enter a valid guardian email address.'); studentIdCounter--; return;
+                      alert('Invalid guardian email.'); studentIdCounter--; return;
                   }
 
-                  const assignedHouse = assignHouse();
+                  const assignedHouse = assignHouse(); // Uses current school's houses
+
                   function createAndSaveStudent(imageDataUrl) {
                       const newStudent = {
                           id: studentId, name, dob, gender, phone, address, guardian,
                           guardianPhone, guardianEmail, school, stream, house: assignedHouse,
-                          image: imageDataUrl
+                          image: imageDataUrl // Can be null
                       };
                       const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
                       savedStudents.push(newStudent);
                       saveStudents(savedStudents);
-                      addStudentToTable(newStudent);
+                      addStudentToTable(newStudent); // Add new row to table
                       registrationForm.reset();
                       console.log("Student registered:", newStudent);
-                      alert(`Student ${name} registered successfully with ID ${studentId}.`);
+                      alert(`Student ${name} registered successfully (ID: ${studentId}, House: ${assignedHouse}).`);
                   }
 
                   if (imageInput.files && imageInput.files[0]) {
                       const reader = new FileReader();
                       reader.onload = function(e) {
-                          if (e.target.result.length > 3 * 1024 * 1024) { alert('Image file too large. Max ~3MB.'); studentIdCounter--; return; }
-                          createAndSaveStudent(e.target.result);
+                          if (e.target.result.length > 2.5 * 1024 * 1024) {
+                               alert('Image too large. Registering without image.');
+                               createAndSaveStudent(null);
+                           } else {
+                               createAndSaveStudent(e.target.result);
+                           }
                       };
-                       reader.onerror = () => { console.error("Error reading image."); alert("Could not read image. Registering without image."); createAndSaveStudent(null); }
+                       reader.onerror = () => { console.error("Error reading image."); alert("Error reading image. Registering without image."); createAndSaveStudent(null); }
                       reader.readAsDataURL(imageInput.files[0]);
                   } else {
-                       createAndSaveStudent(null);
+                       createAndSaveStudent(null); // Register without image
                   }
               });
-        } else { console.warn("Registration form element not found."); }
+        }
+
+        // --- NEW: Edit Student Functions ---
+        function editStudentRow(button) {
+            const row = button.closest('tr');
+            if (!row) return;
+
+            const studentId = row.cells[1].textContent;
+            console.log("Editing student ID:", studentId);
+
+            // Extract data from cells (adjust indices based on your table structure)
+            const currentImageSrc = row.cells[0].querySelector('img')?.src || 'placeholder-logo.png';
+            const name = row.cells[2].textContent;
+            const dob = row.cells[3].textContent;
+            const gender = row.cells[4].textContent;
+            const guardian = row.cells[5].textContent;
+            const guardianEmail = row.cells[6].textContent;
+            const stream = row.cells[7].textContent;
+            const schoolType = row.cells[8].textContent;
+            const house = row.cells[9].textContent;
+            // Need to get phone and address - they aren't in default table view.
+            // Fetch full data from storage instead for reliability
+             const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
+             const studentData = savedStudents.find(s => s.id === studentId);
+
+             if (!studentData) {
+                 alert("Could not find student data to edit.");
+                 return;
+             }
+
+            // Populate the modal form
+            document.getElementById('edit-studentId').value = studentData.id;
+            document.getElementById('edit-name').value = studentData.name || '';
+            document.getElementById('edit-dob').value = studentData.dob || '';
+            document.getElementById('edit-gender').value = studentData.gender || '';
+            document.getElementById('edit-phone').value = studentData.phone || '';
+            document.getElementById('edit-address').value = studentData.address || '';
+            document.getElementById('edit-guardian').value = studentData.guardian || '';
+            document.getElementById('edit-guardianPhone').value = studentData.guardianPhone || '';
+            document.getElementById('edit-guardianEmail').value = studentData.guardianEmail || '';
+            document.getElementById('edit-school').value = studentData.school || '';
+            document.getElementById('edit-stream').value = studentData.stream || '';
+            document.getElementById('edit-house').value = studentData.house || ''; // Display house
+
+            // Handle image preview and storing current URL
+            document.getElementById('edit-current-image-preview').src = studentData.image || 'placeholder-logo.png';
+            document.getElementById('edit-currentImageUrl').value = studentData.image || ''; // Store for comparison
+            document.getElementById('edit-studentImage').value = ''; // Clear file input
+
+            // Show the modal using Bootstrap's jQuery plugin
+            $('#editStudentModal').modal('show');
+        }
+
+        function handleEditStudentSubmit(event) {
+            event.preventDefault();
+            console.log("Submitting edited student data...");
+
+            const studentId = document.getElementById('edit-studentId').value;
+            const currentImageUrl = document.getElementById('edit-currentImageUrl').value; // Get stored original image URL
+            const imageInput = document.getElementById('edit-studentImage');
+
+            // Gather updated data from form
+             const updatedData = {
+                 id: studentId,
+                 name: document.getElementById('edit-name').value.trim(),
+                 dob: document.getElementById('edit-dob').value,
+                 gender: document.getElementById('edit-gender').value,
+                 phone: document.getElementById('edit-phone').value.trim(),
+                 address: document.getElementById('edit-address').value.trim(),
+                 guardian: document.getElementById('edit-guardian').value.trim(),
+                 guardianPhone: document.getElementById('edit-guardianPhone').value.trim(),
+                 guardianEmail: document.getElementById('edit-guardianEmail').value.trim(),
+                 school: document.getElementById('edit-school').value,
+                 stream: document.getElementById('edit-stream').value.trim(),
+                 house: document.getElementById('edit-house').value, // Keep existing house for now
+                 image: currentImageUrl // Default to current image
+            };
+
+            // Validation (similar to registration)
+            if (!updatedData.name || !updatedData.dob || !updatedData.gender || !updatedData.address || !updatedData.guardian || !updatedData.guardianPhone || !updatedData.guardianEmail || !updatedData.school || !updatedData.stream) {
+                alert('Please fill all required fields.'); return;
+            }
+            if (!validateEmail(updatedData.guardianEmail)) {
+                alert('Invalid guardian email.'); return;
+            }
+
+            const processUpdate = (imageDataUrl) => {
+                updatedData.image = imageDataUrl; // Update image data URL
+
+                const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
+                const studentIndex = savedStudents.findIndex(s => s.id === studentId);
+
+                if (studentIndex > -1) {
+                    savedStudents[studentIndex] = updatedData; // Update the student in the array
+                    saveStudents(savedStudents); // Save back to localStorage
+
+                    // Update the table row directly
+                    updateTableRow(updatedData);
+
+                    console.log("Student data updated:", updatedData);
+                    alert("Student data updated successfully!");
+                    $('#editStudentModal').modal('hide'); // Hide modal on success
+                } else {
+                    console.error("Student ID not found for update:", studentId);
+                    alert("Error: Could not find the student to update.");
+                }
+            };
+
+            // Handle image update: Read file only if a new one was selected
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                     if (e.target.result.length > 2.5 * 1024 * 1024) {
+                         alert('New image file too large. Update failed.');
+                         // Optionally, you could proceed without updating the image: processUpdate(currentImageUrl);
+                         return;
+                     }
+                     processUpdate(e.target.result); // Process with new image data
+                };
+                reader.onerror = () => {
+                    console.error("Error reading new image.");
+                    alert("Error processing the new image. Data not updated.");
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                // No new image selected, proceed with the existing image URL
+                processUpdate(currentImageUrl);
+            }
+        }
+
+        // --- NEW: Function to update a specific table row ---
+         function updateTableRow(studentData) {
+            // Find the row using the data-id attribute
+            const row = studentsTableBody.querySelector(`tr[data-id="${studentData.id}"]`);
+            if (row) {
+                 // Re-populate the cells - similar to addStudentToTable but for an existing row
+                 const sanitize = (str) => {
+                     if (!str) return 'N/A';
+                     const temp = document.createElement('div');
+                     temp.textContent = str;
+                     return temp.innerHTML;
+                 };
+                 row.innerHTML = `
+                     <td><img src="${studentData.image || 'placeholder-logo.png'}" alt="Image"></td>
+                     <td>${sanitize(studentData.id)}</td>
+                     <td>${sanitize(studentData.name)}</td>
+                     <td>${sanitize(studentData.dob)}</td>
+                     <td>${sanitize(studentData.gender)}</td>
+                     <td>${sanitize(studentData.guardian)}</td>
+                     <td>${sanitize(studentData.guardianEmail)}</td>
+                     <td>${sanitize(studentData.stream)}</td>
+                     <td>${sanitize(studentData.school)}</td>
+                     <td>${sanitize(studentData.house)}</td>
+                     <td>
+                         <button class="action-btn edit-btn" onclick="editStudentRow(this)">Edit</button>
+                         <button class="action-btn delete-btn" onclick="deleteStudentRow(this)">Delete</button>
+                     </td>
+                 `;
+                 console.log("Table row updated for ID:", studentData.id);
+             } else {
+                 console.warn("Could not find table row to update for ID:", studentData.id);
+                 // As fallback, could reload the whole table, but direct update is better
+                 // loadStudents();
+             }
+         }
 
 
         function deleteStudentRow(button) {
-            // ...(Keep existing deleteStudentRow function as is)...
              const row = button.closest('tr');
+             if (!row || row.cells.length < 3) return;
              const studentIdToDelete = row.cells[1].textContent;
              const studentNameToDelete = row.cells[2].textContent;
-             if (confirm(`Are you sure you want to delete student ${studentNameToDelete} (ID: ${studentIdToDelete})?`)) {
-                  console.log("Deleting student with ID:", studentIdToDelete);
+             if (confirm(`Delete student ${studentNameToDelete} (ID: ${studentIdToDelete})?`)) {
+                  console.log("Deleting student ID:", studentIdToDelete);
                   const savedStudents = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
                   const updatedStudents = savedStudents.filter(student => student.id !== studentIdToDelete);
                   saveStudents(updatedStudents);
-                  row.remove();
+                  row.remove(); // Remove row from HTML table
                   console.log("Student deleted.");
              }
         }
 
         // --- Email Sending & Related Logic ---
         function searchGuardianEmail(formType) {
-            // ...(Keep existing searchGuardianEmail function as is)...
-             if (mainContent.style.display !== 'block') return;
+             // ... (Function remains the same) ...
+              if (mainContent.style.display !== 'block') return;
              let nameInputId, emailInputId;
              if (formType === 'checkin') { nameInputId = 'name'; emailInputId = 'email'; }
              else if (formType === 'checkout') { nameInputId = 'checkout-name'; emailInputId = 'checkout-email'; }
@@ -1009,52 +1333,64 @@
              const students = JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]');
              emailInput.value = ''; // Clear first
              if (name) {
-                 const student = students.find(s => s.name.toLowerCase().startsWith(name));
+                 const student = students.find(s => s.name && s.name.toLowerCase().startsWith(name));
                  if (student && student.guardianEmail) {
-                     console.log(`Auto-filled guardian email for ${student.name}: ${student.guardianEmail}`);
+                     console.log(`Auto-filled for ${student.name}: ${student.guardianEmail}`);
                      emailInput.value = student.guardianEmail;
-                     nameInput.value = student.name; // Optional: Update to full name
+                     nameInput.value = student.name;
                  } else {
-                     console.log(`No guardian email found starting with "${name}".`);
+                     console.log(`No match starting with "${name}".`);
                  }
              }
         }
 
         function sendCheckInMail() {
-            // ...(Keep existing sendCheckInMail function as is)...
-             if (mainContent.style.display !== 'block') { alert("Please log in first."); return; }
+            // ... (Function remains the same) ...
+             if (mainContent.style.display !== 'block') { alert("Please log in."); return; }
              const name = document.getElementById("name").value.trim();
              const email = document.getElementById("email").value.trim();
              const currentSchoolName = schoolNameDisplay.textContent || "the school";
-             if (!name || !email) { alert("Please enter student name and guardian email."); return; }
-             if (!validateEmail(email)) { alert("Invalid guardian email address format."); return; }
-             var params = { student_name: name, guardian_email: email, school_name: currentSchoolName, message_type: "Student Check-In", full_message: `Dear Guardian, this is to inform you that ${name} has safely checked into ${currentSchoolName}.` };
-             const serviceID = "service_cc5v9ac"; // Your Service ID
-             const templateID = "template_7026dua"; // Your Template ID
-             console.log("Attempting to send Check-In email:", params);
+             if (!name || !email) { alert("Enter student name and guardian email."); return; }
+             if (!validateEmail(email)) { alert("Invalid guardian email."); return; }
+             var params = { student_name: name, guardian_email: email, school_name: currentSchoolName, message_type: "Student Check-In", full_message: `Dear Guardian, ${name} has safely checked into ${currentSchoolName}.` };
+             const serviceID = "service_cc5v9ac";
+             const templateID = "template_7026dua";
+             console.log("Sending Check-In email:", params);
              alert("Sending check-in notification...");
              emailjs.send(serviceID, templateID, params)
-                 .then((res) => { console.log("Check-In email SUCCESS!", res.status); document.getElementById("name").value = ""; document.getElementById("email").value = ""; alert(`Check-in notification for ${name} sent successfully!`); })
-                 .catch((err) => { console.error("Check-In email FAILED:", err); alert(`Failed to send check-in notification. Error: ${JSON.stringify(err)}`); });
+                 .then((res) => {
+                     console.log("Check-In SUCCESS!", res.status);
+                     document.getElementById("name").value = ""; document.getElementById("email").value = "";
+                     alert(`Check-in notification sent for ${name}.`);
+                 }, (err) => {
+                     console.error("Check-In FAILED:", err);
+                     alert(`Failed to send notification. Error: ${JSON.stringify(err)}`);
+                 });
         }
 
         function sendCheckOutMail() {
-            // ...(Keep existing sendCheckOutMail function as is)...
-             if (mainContent.style.display !== 'block') { alert("Please log in first."); return; }
+            // ... (Function remains the same) ...
+             if (mainContent.style.display !== 'block') { alert("Please log in."); return; }
              const name = document.getElementById("checkout-name").value.trim();
              const email = document.getElementById("checkout-email").value.trim();
              const reason = document.getElementById("checkout-reason").value.trim();
              const currentSchoolName = schoolNameDisplay.textContent || "the school";
-             if (!name || !email || !reason) { alert("Please fill in all check-out fields."); return; }
-             if (!validateEmail(email)) { alert("Invalid guardian email address format."); return; }
-             var params = { student_name: name, guardian_email: email, checkout_reason: reason, school_name: currentSchoolName, message_type: "Student Check-Out", full_message: `Dear Guardian, this is to inform you that ${name} has checked out from ${currentSchoolName}. Reason: ${reason}.` };
-             const serviceID = "service_cc5v9ac"; // Your Service ID
-             const templateID = "template_tiofcf4"; // Your Template ID
-             console.log("Attempting to send Check-Out email:", params);
+             if (!name || !email || !reason) { alert("Fill all check-out fields."); return; }
+             if (!validateEmail(email)) { alert("Invalid guardian email."); return; }
+             var params = { student_name: name, guardian_email: email, checkout_reason: reason, school_name: currentSchoolName, message_type: "Student Check-Out", full_message: `Dear Guardian, ${name} has checked out from ${currentSchoolName}. Reason: ${reason}.` };
+             const serviceID = "service_cc5v9ac";
+             const templateID = "template_tiofcf4";
+             console.log("Sending Check-Out email:", params);
              alert("Sending check-out notification...");
              emailjs.send(serviceID, templateID, params)
-                 .then((res) => { console.log("Check-Out email SUCCESS!", res.status); document.getElementById("checkout-name").value = ""; document.getElementById("checkout-email").value = ""; document.getElementById("checkout-reason").value = ""; alert(`Check-out notification for ${name} sent successfully!`); })
-                 .catch((err) => { console.error("Check-Out email FAILED:", err); alert(`Failed to send check-out notification. Error: ${JSON.stringify(err)}`); });
+                 .then((res) => {
+                     console.log("Check-Out SUCCESS!", res.status);
+                     document.getElementById("checkout-name").value = ""; document.getElementById("checkout-email").value = ""; document.getElementById("checkout-reason").value = "";
+                     alert(`Check-out notification sent for ${name}.`);
+                 }, (err) => {
+                      console.error("Check-Out FAILED:", err);
+                      alert(`Failed to send notification. Error: ${JSON.stringify(err)}`);
+                 });
         }
 
     </script>
